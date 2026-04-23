@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-type BadgeVariant = "default" | "success" | "warning" | "danger" | "accent"
+type BadgeVariant = "default" | "success" | "warning" | "danger" | "accent" | "outline" | "info"
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant
@@ -32,6 +32,16 @@ const variantStyles: Record<BadgeVariant, React.CSSProperties> = {
     background: "var(--accent-muted)",
     color: "var(--text-accent)",
     border: "1px solid var(--border-accent)",
+  },
+  outline: {
+    background: "transparent",
+    color: "var(--text-secondary)",
+    border: "1px solid var(--border-strong)",
+  },
+  info: {
+    background: "rgba(99,102,241,0.08)",
+    color: "rgb(99,102,241)",
+    border: "1px solid rgba(99,102,241,0.2)",
   },
 }
 

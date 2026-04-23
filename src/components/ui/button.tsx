@@ -2,7 +2,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline" | "ghost" | "destructive" | "link"
+  variant?: "default" | "outline" | "ghost" | "destructive" | "link" | "trust"
   size?: "sm" | "md" | "lg"
   loading?: boolean
 }
@@ -13,7 +13,7 @@ const sizeStyles: Record<NonNullable<ButtonProps["size"]>, React.CSSProperties> 
   lg: { height: "54px", padding: "0 28px", fontSize: "16px", borderRadius: "var(--radius-lg)" },
 }
 
-const variantStyles: Record<NonNullable<ButtonProps["variant"] | "trust">, React.CSSProperties> = {
+const variantStyles: Record<NonNullable<ButtonProps["variant"]>, React.CSSProperties> = {
   default: {
     background: "var(--accent)",
     color: "#fff",
@@ -65,7 +65,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         style={{
           ...sizeStyles[size],
-          ...variantStyles[variant as any],
+          ...variantStyles[variant ?? "default"],
           cursor: loading ? "wait" : "pointer",
           fontWeight: 700,
           letterSpacing: "-0.01em",

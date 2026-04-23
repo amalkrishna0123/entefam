@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 
 interface ModalProps {
   isOpen: boolean
-  onClose: () => void
+  onClose?: () => void
   title?: string
   children: React.ReactNode
   className?: string
@@ -14,7 +14,7 @@ interface ModalProps {
 export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
   React.useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
+      if (e.key === "Escape") onClose?.()
     }
     if (isOpen) {
       document.body.style.overflow = "hidden"
@@ -43,15 +43,17 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
         {(title || onClose) && (
           <div className="flex items-center justify-between p-5 border-b border-[var(--border)]">
             {title && <h3 className="text-lg font-semibold text-[var(--text-primary)]">{title}</h3>}
-            <button 
-              onClick={onClose}
-              className="p-2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
+            {onClose && (
+              <button 
+                onClick={onClose}
+                className="p-2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            )}
           </div>
         )}
         <div className="p-6">

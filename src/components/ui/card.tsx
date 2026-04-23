@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-type CardVariant = "default" | "glass" | "flat" | "elevated"
+type CardVariant = "default" | "glass" | "flat" | "elevated" | "premium"
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: CardVariant
