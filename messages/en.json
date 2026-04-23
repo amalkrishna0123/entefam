@@ -1,0 +1,12 @@
+{
+  "Common": {
+    "title": "FamilyOS",
+    "dashboard": "Dashboard",
+    "members": "Members",
+    "expenses": "Expenses",
+    "emi": "EMI",
+    "events": "Events",
+    "health": "Health",
+    "settings": "Settings"
+  }
+}
