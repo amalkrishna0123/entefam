@@ -87,7 +87,7 @@ export default function UpcomingEvents() {
                 {/* Badge */}
                 <div className="db-event__badge-wrap">
                   <Badge
-                    variant={i === 0 ? "default" : "secondary"}
+                    variant={i === 0 ? "accent" : "outline"}
                     className="db-event__category-badge"
                   >
                     {event.category || "General"}

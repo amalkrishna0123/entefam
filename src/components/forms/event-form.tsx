@@ -6,6 +6,7 @@ import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useNotifications } from "@/hooks/use-notifications"
 
 const formSchema = z.object({
   title: z.string().min(2, "Title is required"),
@@ -14,6 +15,7 @@ const formSchema = z.object({
 })
 
 export default function EventForm({ onSuccess }: { onSuccess?: () => void }) {
+  const { sendNotification } = useNotifications();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,6 +39,10 @@ export default function EventForm({ onSuccess }: { onSuccess?: () => void }) {
           location: "",
         });
         onSuccess?.();
+        sendNotification(
+          "✅ Event Scheduled",
+          `"${values.title}" has been added to your calendar.`
+        );
       }
     } catch (e) {
       console.error(e);

@@ -4,9 +4,17 @@ import { useState } from 'react';
 import EventForm from '@/components/forms/event-form';
 import EventList from '@/components/events/event-list';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import NotificationBanner, { NotificationGrantedPill, NotificationDeniedPill } from '@/components/ui/notification-banner';
+import { useNotifications } from '@/hooks/use-notifications';
+import { useEffect } from 'react';
 
 export default function EventsPage() {
   const [refreshKey, setRefreshKey] = useState(0);
+  const { checkAndNotifyEvents } = useNotifications();
+
+  useEffect(() => {
+    checkAndNotifyEvents();
+  }, [checkAndNotifyEvents]);
 
   const handleSuccess = () => {
     setRefreshKey(prev => prev + 1);
@@ -14,14 +22,22 @@ export default function EventsPage() {
 
   return (
     <div className="space-y-12 animate-fade-in py-4">
-      <div className="flex flex-col gap-3" style={{marginBottom:"20px"}}>
-        <h1 className="text-3xl md:text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 400 }}>
-          Events
-        </h1>
-        <p className="text-[var(--text-secondary)] text-xl font-medium">
-          Keep track of important family dates and gatherings.
-        </p>
-      </div>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-3xl md:text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 400 }}>
+              Events
+            </h1>
+            <p className="text-[var(--text-secondary)] text-lg font-medium">
+              Keep track of important family dates and gatherings.
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <NotificationGrantedPill />
+            <NotificationDeniedPill />
+          </div>
+        </div>
+      
+      <NotificationBanner onGranted={() => checkAndNotifyEvents()} />
       
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-1">
