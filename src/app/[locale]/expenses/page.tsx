@@ -38,7 +38,7 @@ export default function ExpensesPage() {
     <div className="space-y-12 animate-fade-in py-4">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6" style={{marginBottom:"20px"}}>
         <div className="flex flex-col gap-3">
-          <h1 className="text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 800 }}>
+          <h1 className="text-3xl md:text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 400 }}>
             Expenses
           </h1>
           <p className="text-[var(--text-secondary)] text-xl font-medium">
@@ -46,7 +46,7 @@ export default function ExpensesPage() {
           </p>
         </div>
 
-        <div className={`
+        <div style={{padding:"20px"}} className={`
           p-6 rounded-3xl border transition-all duration-500
           ${isOverBudget 
             ? 'bg-red-500/10 border-red-500/20 text-red-500 shadow-[0_0_40px_rgba(239,68,68,0.1)]' 
@@ -56,7 +56,7 @@ export default function ExpensesPage() {
             Total Monthly Spend
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-black tracking-tighter">
+            <span className="text-2xl md:text-4xl font-black tracking-tighter">
               {formatCurrency(totalExpenses)}
             </span>
             <span className="text-sm font-bold opacity-40">

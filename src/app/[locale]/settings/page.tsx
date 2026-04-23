@@ -9,7 +9,7 @@ export default function SettingsPage() {
   return (
     <div className="space-y-10 animate-fade-in py-6 max-w-4xl">
       <div className="flex flex-col gap-1" style={{marginBottom:"20px"}}>
-        <h1 className="text-4xl tracking-tighter text-[var(--text-primary)]" style={{ fontWeight: 800 }}>
+        <h1 className="text-3xl md:text-5xl tracking-tighter text-[var(--text-primary)]" style={{ fontWeight: 400 }}>
           Settings
         </h1>
         <p className="text-[var(--text-secondary)] text-lg font-medium opacity-80">

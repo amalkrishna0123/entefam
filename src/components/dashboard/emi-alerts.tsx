@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { RowSkeleton } from '@/components/ui/skeleton';
+import { CreditCard, AlertCircle, IndianRupee } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function EMIAlerts() {
   const [alerts, setAlerts] = useState<any[] | null>(null);
@@ -17,60 +19,66 @@ export default function EMIAlerts() {
   }, []);
 
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="pb-4">
-        <div className="flex justify-between items-center w-full">
-          <CardTitle className="text-sm font-bold text-[var(--text-primary)]">EMI Alerts</CardTitle>
-          <div className="flex items-center gap-1.5 py-0.5 rounded-full bg-[var(--warning-muted)] border border-[var(--warning)]" style={{padding:"5px 10px"}}>
-            <div className="w-1.5 h-1.5 rounded-full bg-[var(--warning)]" />
-            <span className="text-[10px] font-bold text-[var(--warning)] uppercase tracking-tight">Attention</span>
+    <Card className="db-card">
+      <CardHeader className="db-card__header db-card__header--muted">
+        <div className="db-card__header-row">
+          <CardTitle className="db-card__title">
+            <CreditCard size={18} className="text-orange-600" />
+            EMI Tracking
+          </CardTitle>
+          <div className="db-card__status-pill db-card__status-pill--orange">
+            <AlertCircle size={10} />
+            <span>Active</span>
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-0">
-        <div className="flex flex-col">
-          {alerts === null ? (
-            <div className="p-4 space-y-3">
-              <RowSkeleton lines={1} />
-              <RowSkeleton lines={1} />
+
+      <CardContent className="db-card__body db-card__body--flush">
+        {alerts === null ? (
+          <div className="db-card__skeleton-wrap">
+            <RowSkeleton lines={1} />
+            <RowSkeleton lines={1} />
+          </div>
+        ) : alerts.length === 0 ? (
+          <div className="db-card__empty">
+            <div className="db-card__empty-icon">
+              <IndianRupee size={24} strokeWidth={1.5} />
             </div>
-          ) : alerts.length === 0 ? (
-            <div className="p-6 text-center text-[13px] text-[var(--text-secondary)]">
-              No active EMIs tracking.
-            </div>
-          ) : (
-            <div>
-              {alerts.slice(0, 3).map((alert, i) => {
-                // Mock status badge logic
-                const isOverdue = false; 
-                const variant = isOverdue ? "danger" : "warning";
-                
-                return (
-                  <div key={i} className="flex justify-between items-center p-4 px-6 border-b border-[var(--border)] last:border-0 hover:bg-[var(--bg-hover)] transition-colors">
-                    <div>
-                      <div className="font-bold text-[var(--text-primary)] text-[15px]">
-                        {alert.emiName || alert.title || 'EMI Due'}
-                      </div>
-                      <div className="text-[12px] text-[var(--text-secondary)] font-medium mt-0.5">
-                        Due: {alert.dueDate || '-'}
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <div className="font-bold text-[var(--text-primary)] text-[16px] tracking-tight">
-                        ₹{alert.amount || '0'}
-                      </div>
-                      <Badge variant={variant} style={{ padding: "1px 8px", fontSize: "10px", fontWeight: 700 }}>
-                        PENDING
-                      </Badge>
-                    </div>
+            <p className="db-card__empty-text">No active EMIs tracking.</p>
+          </div>
+        ) : (
+          <div className="db-list">
+            {alerts.slice(0, 3).map((alert, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }}
+                className="db-list__item"
+              >
+                <div className="db-emi__info">
+                  <div className="db-emi__name">
+                    {alert.emiName || alert.title || 'EMI Due'}
                   </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+                  <div className="db-emi__due">
+                    <span className="db-emi__dot" />
+                    Next: {alert.dueDate || '-'}
+                  </div>
+                </div>
+                <div className="db-emi__amount-col">
+                  <div className="db-emi__amount">
+                    <IndianRupee size={14} />
+                    {alert.amount || '0'}
+                  </div>
+                  <Badge variant="warning" className="db-emi__badge">
+                    PENDING
+                  </Badge>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
 }
-

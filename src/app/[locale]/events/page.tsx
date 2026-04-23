@@ -15,7 +15,7 @@ export default function EventsPage() {
   return (
     <div className="space-y-12 animate-fade-in py-4">
       <div className="flex flex-col gap-3" style={{marginBottom:"20px"}}>
-        <h1 className="text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 800 }}>
+        <h1 className="text-3xl md:text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 400 }}>
           Events
         </h1>
         <p className="text-[var(--text-secondary)] text-xl font-medium">

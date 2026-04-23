@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Zap, IndianRupee, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function QuickExpense() {
   const [amount, setAmount] = useState('');
@@ -17,72 +19,104 @@ export default function QuickExpense() {
       const res = await fetch('/api/expenses', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount, description, category: 'Quick', date: new Date().toISOString().split('T')[0] })
+        body: JSON.stringify({
+          amount,
+          description,
+          category: 'Quick',
+          date: new Date().toISOString().split('T')[0]
+        })
       });
       if (res.ok) {
         setAmount('');
         setDescription('');
         setSuccess(true);
-        setTimeout(() => setSuccess(false), 2000);
+        setTimeout(() => setSuccess(false), 3000);
       }
-    } catch(err) {
+    } catch (err) {
       console.error('Failed to add quick expense', err);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
-    <Card className="relative overflow-hidden group">
-      {success && (
-        <div className="absolute inset-0 bg-[var(--success-muted)] flex items-center justify-center z-10 animate-fade-in backdrop-blur-md">
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-2xl bg-[var(--success)] flex items-center justify-center text-white shadow-lg">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <Card className="db-card db-card--relative">
+      {/* Success overlay */}
+      <AnimatePresence>
+        {success && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="db-card__success-overlay"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1, rotate: 360 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              className="db-card__success-icon"
+            >
+              <CheckCircle2 size={32} />
+            </motion.div>
+            <span className="db-card__success-text">Expense Recorded!</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <CardHeader className="db-card__header">
+        <div className="db-card__header-row">
+          <CardTitle className="db-card__title">
+            <div className="db-card__title-icon db-card__title-icon--orange">
+              <Zap size={14} fill="currentColor" />
             </div>
-            <span className="text-sm font-bold text-[var(--success)]">Expense Added</span>
-          </div>
-        </div>
-      )}
-      <CardHeader className="pb-4">
-        <div className="flex justify-between items-center w-full">
-          <CardTitle className="text-sm font-bold text-[var(--text-primary)]">Quick Expense</CardTitle>
-          <div className="px-3 py-0 bg-[var(--accent-muted)] rounded-lg" style={{padding:"5px 10px"}}>
-            ₹
+            Quick Expense
+          </CardTitle>
+          <div className="db-card__badge-icon">
+            <IndianRupee size={12} />
           </div>
         </div>
       </CardHeader>
-      <CardContent className="pt-4">
-        <div className="flex flex-col gap-4">
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] font-bold text-lg">₹</span>
-            <Input 
-              placeholder="0.00" 
-              type="number" 
-              value={amount} 
+
+      <CardContent className="db-card__body">
+        <div className="qe-form">
+          {/* Amount field */}
+          <div className="qe-form__amount-wrap">
+            <div className="qe-form__currency-icon">
+              <IndianRupee size={18} strokeWidth={3} />
+            </div>
+            <Input
+              id="qe-amount"
+              placeholder="0.00"
+              type="number"
+              value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              style={{ paddingLeft: "36px" }}
+              className="qe-form__amount-input"
               disabled={loading}
             />
           </div>
-          <Input 
-            placeholder="What was this for?" 
-            value={description} 
-            onChange={(e) => setDescription(e.target.value)} 
+
+          {/* Description field */}
+          <Input
+            id="qe-description"
+            placeholder="Description (e.g. Coffee, Milk)"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="qe-form__text-input"
             disabled={loading}
           />
-          <Button 
-            variant="trust"
-            className="w-full mt-2" 
-            onClick={handleAddExpense} 
-            loading={loading}
-            disabled={!amount || !description}
+
+          {/* Submit */}
+          <Button
+            id="qe-submit"
+            className="qe-form__submit"
+            style={{ background: "#0f172a", color: "white" }}
+            onClick={handleAddExpense}
+            disabled={!amount || !description || loading}
           >
-            Record Expense
+            {loading ? "Recording…" : "Record Expense"}
           </Button>
         </div>
       </CardContent>
     </Card>
   );
 }
-

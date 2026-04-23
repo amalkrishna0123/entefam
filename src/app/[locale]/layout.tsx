@@ -28,7 +28,7 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  
+
   // Ensure that the incoming `locale` is valid
   if (!['en', 'ml'].includes(locale)) {
     notFound();
