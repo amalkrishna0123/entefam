@@ -1,0 +1,40 @@
+"use client"
+
+import { useForm } from "react-hook-form"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import Link from "next/link"
+
+export default function LoginForm() {
+  const { register, handleSubmit } = useForm()
+
+  function onSubmit(values: any) {
+    console.log(values)
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">Email address</Label>
+        <Input id="email" type="email" placeholder="john@example.com" {...register("email")} required />
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="password">Password</Label>
+          <Link href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+            Forgot password?
+          </Link>
+        </div>
+        <Input id="password" type="password" {...register("password")} required />
+      </div>
+      <Button type="submit" className="w-full">Sign in</Button>
+      <div className="text-center text-sm text-gray-600">
+        Don't have an account?{" "}
+        <Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+          Sign up
+        </Link>
+      </div>
+    </form>
+  )
+}
