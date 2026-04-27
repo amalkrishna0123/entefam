@@ -2,9 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 import { useNotification } from './notification-manager';
+import { useNotificationStore } from '@/store/notification-store';
 
 export function NotificationChecker() {
   const { notify } = useNotification();
+  const { notifications } = useNotificationStore();
   const checkedRef = useRef(false);
 
   useEffect(() => {
@@ -13,6 +15,15 @@ export function NotificationChecker() {
 
     const checkDues = async () => {
       try {
+        const todayStr = new Date().toISOString().split('T')[0];
+        
+        const isAlreadyNotified = (title: string) => {
+          return notifications.some(n => 
+            n.title === title && 
+            n.date.startsWith(todayStr)
+          );
+        };
+
         // Check EMIs
         const emiRes = await fetch('/api/emi');
         const emis = await emiRes.json();
@@ -21,18 +32,26 @@ export function NotificationChecker() {
           const today = new Date().getDate();
           emis.forEach((emi) => {
             const dueDate = parseInt(emi.dueDate);
+            const emiTitle = `EMI: ${emi.emiName}`;
+            
             if (dueDate === today) {
-              notify({
-                title: 'EMI Due Today',
-                message: `Your EMI for "${emi.emiName}" (₹${emi.amount}) is due today!`,
-                type: 'warning'
-              });
+              const title = `EMI Due Today: ${emi.emiName}`;
+              if (!isAlreadyNotified(title)) {
+                notify({
+                  title,
+                  message: `Your EMI for "${emi.emiName}" (₹${emi.amount}) is due today!`,
+                  type: 'warning'
+                });
+              }
             } else if (dueDate < today) {
-              notify({
-                title: 'EMI Overdue',
-                message: `Your EMI for "${emi.emiName}" (₹${emi.amount}) was due on day ${dueDate}.`,
-                type: 'danger'
-              });
+              const title = `EMI Overdue: ${emi.emiName}`;
+              if (!isAlreadyNotified(title)) {
+                notify({
+                  title,
+                  message: `Your EMI for "${emi.emiName}" (₹${emi.amount}) was due on day ${dueDate}.`,
+                  type: 'danger'
+                });
+              }
             }
           });
         }
@@ -47,21 +66,27 @@ export function NotificationChecker() {
           tomorrow.setDate(now.getDate() + 1);
           
           const tomorrowStr = tomorrow.toISOString().split('T')[0];
-          const todayStr = now.toISOString().split('T')[0];
+          const todayStrReal = now.toISOString().split('T')[0];
 
           events.forEach((event) => {
             if (event.date === tomorrowStr) {
-              notify({
-                title: 'Upcoming Event Tomorrow',
-                message: `Reminder: "${event.title}" is happening tomorrow!`,
-                type: 'info'
-              });
-            } else if (event.date === todayStr) {
-               notify({
-                title: 'Event Today',
-                message: `"${event.title}" is happening today!`,
-                type: 'success'
-              });
+              const title = `Upcoming Event: ${event.title}`;
+              if (!isAlreadyNotified(title)) {
+                notify({
+                  title,
+                  message: `Reminder: "${event.title}" is happening tomorrow!`,
+                  type: 'info'
+                });
+              }
+            } else if (event.date === todayStrReal) {
+              const title = `Event Today: ${event.title}`;
+              if (!isAlreadyNotified(title)) {
+                notify({
+                  title,
+                  message: `"${event.title}" is happening today!`,
+                  type: 'success'
+                });
+              }
             }
           });
         }

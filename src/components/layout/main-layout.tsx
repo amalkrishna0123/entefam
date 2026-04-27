@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import Sidebar from "./sidebar"
+import NotificationCenter from "./notification-center"
+
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -74,6 +76,28 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               }} 
             />
           </div>
+          <div style={{ marginLeft: "auto"}}>
+            <NotificationCenter />
+          </div>
+        </header>
+
+        {/* Desktop Header (Top Bar) */}
+        <header
+          className="desktop-header"
+          style={{
+            height: "80px",
+            display: "none",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            padding: "0 80px",
+            position: "sticky",
+            top: 0,
+            zIndex: 40,
+            background: "rgba(var(--bg-base-rgb), 0.8)",
+            backdropFilter: "blur(10px)",
+          }}
+        >
+          <NotificationCenter />
         </header>
 
         <main

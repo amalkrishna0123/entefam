@@ -22,12 +22,12 @@ export default function EventsPage() {
 
   return (
     <div className="space-y-12 animate-fade-in py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between" style={{marginBottom:"20px"}}>
           <div className="flex flex-col gap-1">
-            <h1 className="text-3xl md:text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 400 }}>
+            <h1 className="text-2xl md:text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
               Events
             </h1>
-            <p className="text-[var(--text-secondary)] text-lg font-medium">
+            <p className="hidden md:block text-[var(--text-secondary)] text-lg font-medium">
               Keep track of important family dates and gatherings.
             </p>
           </div>

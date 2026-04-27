@@ -5,6 +5,7 @@ import { RowSkeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { CalendarDays, MapPin, Clock, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function UpcomingEvents() {
   const [events, setEvents] = useState<any[] | null>(null);
@@ -26,9 +27,9 @@ export default function UpcomingEvents() {
             <CalendarDays size={18} className="text-yellow-600" />
             Upcoming Events
           </CardTitle>
-          <button className="db-card__action-btn">
+          <Link href="/events" className="db-card__action-btn">
             View All <ChevronRight size={12} />
-          </button>
+          </Link>
         </div>
       </CardHeader>
 

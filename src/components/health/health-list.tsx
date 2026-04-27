@@ -173,10 +173,17 @@ export default function HealthList() {
               <Label htmlFor="edit-metric">Metric Type</Label>
               <Select id="edit-metric" value={editRecord.metric} onChange={(e) => setEditRecord({...editRecord, metric: e.target.value})}>
                 <option>Weight</option>
+                <option>Height</option>
+                <option>BMI</option>
                 <option>Blood Pressure</option>
                 <option>Heart Rate</option>
                 <option>Steps</option>
                 <option>Sleep</option>
+                <option>Fasting Blood Sugar</option>
+                <option>Post-Meal Blood Sugar</option>
+                <option>Temperature</option>
+                <option>Blood Oxygen</option>
+                <option>Other</option>
               </Select>
             </div>
             <div className="space-y-2">

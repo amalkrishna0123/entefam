@@ -15,10 +15,10 @@ export default function MembersPage() {
   return (
     <div className="space-y-10 animate-fade-in py-6">
       <div className="flex flex-col gap-1 max-w-2xl" style={{marginBottom:"20px"}}>
-        <h1 className="text-3xl md:text-5xl tracking-tighter text-[var(--text-primary)]" style={{ fontWeight: 400 }}>
+        <h1 className="text-2xl md:text-5xl tracking-tighter text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
           Family Members
         </h1>
-        <p className="text-[var(--text-secondary)] text-lg font-medium opacity-80">
+        <p className="hidden md:block text-[var(--text-secondary)] text-lg font-medium opacity-80">
           Manage your family profiles and their personal information.
         </p>
       </div>

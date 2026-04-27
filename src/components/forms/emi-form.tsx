@@ -21,7 +21,7 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
     defaultValues: {
       emiName: "",
       amount: "",
-      dueDate: "",
+      dueDate: new Date().toISOString().split('T')[0],
     },
   })
 
@@ -34,9 +34,9 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
       });
       if (res.ok) {
         form.reset({
-          ...values,
           emiName: "",
           amount: "",
+          dueDate: new Date().toISOString().split('T')[0],
         });
         onSuccess?.();
         sendNotification(
@@ -67,8 +67,14 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
         {errors.amount && <p className="text-[11px] text-[var(--danger)]">{errors.amount.message}</p>}
       </div>
       <div className="space-y-2" style={{marginTop:"15px"}}>
-        <Label htmlFor="dueDate">Due Date (Day of Month)</Label>
-        <Input id="dueDate" type="number" min="1" max="31" placeholder="1" {...form.register("dueDate")} disabled={isSubmitting} />
+        <Label htmlFor="dueDate">EMI Date</Label>
+        <Input 
+          id="dueDate" 
+          type="date" 
+          {...form.register("dueDate")} 
+          disabled={isSubmitting}
+          className="block w-full rounded-xl border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-2.5 text-[var(--text-primary)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
+        />
         {errors.dueDate && <p className="text-[11px] text-[var(--danger)]">{errors.dueDate.message}</p>}
       </div>
       <Button type="submit" className="w-full mt-2" style={{marginTop:"15px"}} loading={isSubmitting}>
@@ -77,4 +83,3 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
     </form>
   )
 }
-

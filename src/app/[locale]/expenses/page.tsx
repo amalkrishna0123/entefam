@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import ExpenseForm from '@/components/forms/expense-form';
 import ExpenseChart from '@/components/charts/expense-chart';
 import ExpenseList from '@/components/expenses/expense-list';
+import AIInsights from '@/components/dashboard/ai-insights';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 
@@ -38,10 +39,10 @@ export default function ExpensesPage() {
     <div className="space-y-12 animate-fade-in py-4">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6" style={{marginBottom:"20px"}}>
         <div className="flex flex-col gap-3">
-          <h1 className="text-3xl md:text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 400 }}>
+          <h1 className="text-2xl md:text-5xl text-center md:text-left tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
             Expenses
           </h1>
-          <p className="text-[var(--text-secondary)] text-xl font-medium">
+          <p className="text-[var(--text-secondary)] text-sm md:text-xl text-center md:text-left font-medium">
             Manage and track your family's spending.
           </p>
         </div>
@@ -85,7 +86,7 @@ export default function ExpensesPage() {
         </div>
 
         <div className="lg:col-span-2">
-          <Card className="h-full">
+          <Card className="md:h-full">
             <CardHeader>
               <CardTitle>Expense Analysis</CardTitle>
             </CardHeader>
@@ -93,10 +94,13 @@ export default function ExpensesPage() {
               <ExpenseChart key={`chart-${refreshKey}`} />
             </CardContent>
           </Card>
+          <div className="mt-8">
+            <AIInsights />
+          </div>
         </div>
       </div>
 
-      <div className="space-y-4" style={{marginTop:"20px"}}>
+      <div className="space-y-4" style={{marginTop:"20px"}} >
         <div className="flex items-center justify-between" style={{marginBottom:"20px"}}>
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Recent Expenses</h2>
         </div>

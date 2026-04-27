@@ -2,6 +2,7 @@
 
 import { useState, useEffect, createContext, useContext, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useNotificationStore } from '@/store/notification-store';
 
 interface Notification {
   id: string;
@@ -18,16 +19,24 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { addNotification } = useNotificationStore();
 
   const notify = useCallback((notification: Omit<Notification, 'id'>) => {
     const id = Math.random().toString(36).substring(2, 9);
     setNotifications((prev) => [...prev, { ...notification, id }]);
 
-    // Auto remove after 5 seconds
+    // Also add to persistent store
+    addNotification({
+      title: notification.title,
+      message: notification.message,
+      type: notification.type,
+    });
+
+    // Auto remove toast after 5 seconds
     setTimeout(() => {
       setNotifications((prev) => prev.filter((n) => n.id !== id));
     }, 5000);
-  }, []);
+  }, [addNotification]);
 
   return (
     <NotificationContext.Provider value={{ notify }}>
@@ -76,6 +85,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
                 </div>
                 <button 
                   onClick={() => setNotifications((prev) => prev.filter((item) => item.id !== n.id))}
+                  style={{marginRight:"10px"}}
                   className="p-1 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>

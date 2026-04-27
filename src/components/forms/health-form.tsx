@@ -71,10 +71,17 @@ export default function HealthForm({ onSuccess }: { onSuccess?: () => void }) {
         <Label htmlFor="metric">Metric Type</Label>
         <Select id="metric" {...form.register("metric")} disabled={isSubmitting}>
           <option>Weight</option>
+          <option>Height</option>
+          <option>BMI</option>
           <option>Blood Pressure</option>
           <option>Heart Rate</option>
           <option>Steps</option>
           <option>Sleep</option>
+          <option>Fasting Blood Sugar</option>
+          <option>Post-Meal Blood Sugar</option>
+          <option>Temperature</option>
+          <option>Blood Oxygen</option>
+          <option>Other</option>
         </Select>
         {errors.metric && <p className="text-[11px] text-[var(--danger)]">{errors.metric.message}</p>}
       </div>

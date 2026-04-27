@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback } from "react"
+import { differenceInDays, isToday, isPast, parseISO, isValid, setDate } from "date-fns"
 
 export type NotificationPermissionState = "default" | "granted" | "denied" | "unsupported"
 
@@ -74,28 +75,53 @@ export function useNotifications() {
     }
   }, [sendNotification])
 
-  /** Fetch EMIs from the API and notify for due-today or overdue items */
-  const checkAndNotifyEmis = useCallback(async () => {
+  /** Fetch EMIs from the API and notify for approaching, due-today or overdue items */
+  const checkAndNotifyEmis = useCallback(async (approachingThreshold: number = 3) => {
     if (typeof window === "undefined" || Notification.permission !== "granted") return
     try {
       const res = await fetch("/api/emi")
       const emis: Array<{ id: string; emiName: string; amount: string; dueDate: string }> = await res.json()
-      const todayDay = new Date().getDate()
+      
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
 
       for (const emi of emis) {
-        const dueDay = parseInt(emi.dueDate)
-        if (dueDay === todayDay) {
-          sendNotification(
-            "💳 EMI Due Today!",
-            `${emi.emiName} — ₹${parseFloat(emi.amount).toLocaleString("en-IN")} is due today`,
-            { tag: `emi-due-${emi.id}` }
-          )
-        } else if (dueDay < todayDay) {
-          sendNotification(
-            "⚠️ EMI Overdue",
-            `${emi.emiName} — ₹${parseFloat(emi.amount).toLocaleString("en-IN")} is overdue`,
-            { tag: `emi-overdue-${emi.id}` }
-          )
+        try {
+          let dueDate: Date;
+          
+          if (/^\d+$/.test(emi.dueDate)) {
+            // Legacy day of month
+            dueDate = setDate(new Date(), parseInt(emi.dueDate));
+          } else {
+            dueDate = parseISO(emi.dueDate);
+          }
+
+          if (!isValid(dueDate)) continue;
+
+          const diff = differenceInDays(dueDate, today)
+          const amountStr = `₹${parseFloat(emi.amount).toLocaleString("en-IN")}`
+
+          if (isToday(dueDate)) {
+            sendNotification(
+              "💳 EMI Due Today!",
+              `${emi.emiName} — ${amountStr} is due today`,
+              { tag: `emi-due-${emi.id}` }
+            )
+          } else if (isPast(dueDate) && !isToday(dueDate)) {
+            sendNotification(
+              "⚠️ EMI Overdue",
+              `${emi.emiName} — ${amountStr} was due on ${emi.dueDate}`,
+              { tag: `emi-overdue-${emi.id}` }
+            )
+          } else if (diff > 0 && diff <= approachingThreshold) {
+            sendNotification(
+              "🔔 EMI Approaching",
+              `${emi.emiName} — ${amountStr} is due in ${diff} days`,
+              { tag: `emi-approaching-${emi.id}` }
+            )
+          }
+        } catch (err) {
+          console.error("Failed to parse EMI date:", emi.dueDate, err)
         }
       }
     } catch (e) {

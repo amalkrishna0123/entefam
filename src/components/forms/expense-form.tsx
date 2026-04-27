@@ -58,12 +58,12 @@ export default function ExpenseForm({ onSuccess }: { onSuccess?: () => void }) {
         </div>
         {errors.amount && <p className="text-[11px] text-[var(--danger)]">{errors.amount.message}</p>}
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2" style={{marginTop:"10px"}}>
         <Label htmlFor="description">Description</Label>
         <Input id="description" placeholder="Where did you spend?" {...form.register("description")} disabled={isSubmitting} />
         {errors.description && <p className="text-[11px] text-[var(--danger)]">{errors.description.message}</p>}
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2" style={{marginTop:"10px"}}>
         <Label htmlFor="category">Category</Label>
         <Select id="category" {...form.register("category")} disabled={isSubmitting}>
           <option>Food</option>
@@ -75,12 +75,12 @@ export default function ExpenseForm({ onSuccess }: { onSuccess?: () => void }) {
         </Select>
         {errors.category && <p className="text-[11px] text-[var(--danger)]">{errors.category.message}</p>}
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2" style={{marginTop:"10px"}}>
         <Label htmlFor="date">Date</Label>
         <Input id="date" type="date" {...form.register("date")} disabled={isSubmitting} />
         {errors.date && <p className="text-[11px] text-[var(--danger)]">{errors.date.message}</p>}
       </div>
-      <Button type="submit" className="w-full mt-2" style={{marginTop:"20px"}} loading={isSubmitting}>
+      <Button type="submit" className="w-full mt-2" style={{marginTop:"10px"}} loading={isSubmitting}>
         Save Expense
       </Button>
     </form>
