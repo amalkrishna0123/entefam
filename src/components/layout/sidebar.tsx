@@ -84,6 +84,8 @@ const navItems: NavItem[] = [
   },
 ]
 
+import { useAuthStore } from "@/store/auth-store"
+
 interface SidebarProps {
   activeRoute?: string
   isMobile?: boolean
@@ -93,6 +95,7 @@ interface SidebarProps {
 export default function Sidebar({ activeRoute, isMobile, onClose }: SidebarProps) {
   const pathname = usePathname()
   const active = activeRoute ?? pathname
+  const { user, profile } = useAuthStore()
 
   return (
     <aside
@@ -204,6 +207,48 @@ export default function Sidebar({ activeRoute, isMobile, onClose }: SidebarProps
         })}
       </nav>
 
+      {/* User Profile */}
+      <div
+        style={{
+          padding: "16px 20px",
+          borderTop: "1px solid var(--border)",
+          marginTop: "auto",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div 
+            style={{ 
+              width: "36px", 
+              height: "36px", 
+              borderRadius: "10px", 
+              background: "var(--bg-subtle)", 
+              display: "flex", 
+              alignItems: "center", 
+              justifyContent: "center",
+              fontSize: "13px",
+              fontWeight: "bold",
+              color: "var(--text-primary)",
+              overflow: "hidden",
+              border: "1px solid var(--border-strong)"
+            }}
+          >
+            {profile?.avatarUrl ? (
+              <img src={profile.avatarUrl} alt="Avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            ) : (
+              user?.displayName ? user.displayName[0].toUpperCase() : (user?.email ? user.email[0].toUpperCase() : '?')
+            )}
+          </div>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontSize: "14px", fontWeight: "bold", color: "var(--text-primary)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {user?.displayName || "User"}
+            </div>
+            <div style={{ fontSize: "11px", color: "var(--text-tertiary)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {user?.email}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Bottom — version */}
       <div
         style={{
@@ -211,7 +256,7 @@ export default function Sidebar({ activeRoute, isMobile, onClose }: SidebarProps
           borderTop: "1px solid var(--border)",
         }}
       >
-        <div style={{ fontSize: "11px", color: "var(--text-tertiary)" }}>v1.0 · FamilyOS</div>
+        <div style={{ fontSize: "11px", color: "var(--text-tertiary)" }}>EnteFam · 2026</div>
       </div>
     </aside>
   )

@@ -16,6 +16,7 @@ interface Member {
   aadhaar?: string
   mobile?: string
   email?: string
+  avatarUrl?: string
 }
 
 export default function MemberList() {
@@ -84,10 +85,14 @@ export default function MemberList() {
               <div className="flex items-start justify mb-6" style={{width:"100%"}}>
                 <div className="flex items-center gap-4" style={{width:"100%"}}>
                   <div className="relative">
-                    <div className="w-14 h-14 rounded-2xl bg-[var(--bg-subtle)] flex items-center justify-center text-[var(--text-primary)] border border-[var(--border-strong)] group-hover:scale-105 transition-transform duration-500">
-                      <span className="text-xl font-bold tracking-tighter opacity-80">
-                        {member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
-                      </span>
+                    <div className="w-14 h-14 rounded-2xl bg-[var(--bg-subtle)] flex items-center justify-center text-[var(--text-primary)] border border-[var(--border-strong)] group-hover:scale-105 transition-transform duration-500 overflow-hidden">
+                      {member.avatarUrl ? (
+                        <img src={member.avatarUrl} alt={member.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xl font-bold tracking-tighter opacity-80">
+                          {member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                        </span>
+                      )}
                     </div>
                     <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-strong)] flex items-center justify-center shadow-sm">
                       <div className="w-2 h-2 rounded-full bg-[var(--success)] animate-pulse" />

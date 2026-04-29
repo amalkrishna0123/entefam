@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 import { NotificationProvider } from "@/components/ui/notification-manager";
 import { NotificationChecker } from "@/components/ui/notification-checker";
+import { AuthProvider } from "@/components/auth/auth-provider";
 
 export default async function LocaleLayout({
   children,
@@ -44,12 +45,14 @@ export default async function LocaleLayout({
       className={`${quicksand.variable} h-full`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col antialiased" suppressHydrationWarning>
+    <body className="min-h-full flex flex-col antialiased" suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
-          <NotificationProvider>
-            <NotificationChecker />
-            {children}
-          </NotificationProvider>
+          <AuthProvider>
+            <NotificationProvider>
+              <NotificationChecker />
+              {children}
+            </NotificationProvider>
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

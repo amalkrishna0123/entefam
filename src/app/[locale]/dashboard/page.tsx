@@ -8,6 +8,8 @@ import AIInsights from '@/components/dashboard/ai-insights';
 import { motion } from 'framer-motion';
 import { Sun, Moon, CloudSun } from 'lucide-react';
 
+import { useAuthStore } from '@/store/auth-store';
+
 function getCurrentGreeting() {
   const hour = new Date().getHours();
   if (hour < 12) return { text: "Good Morning", icon: Sun, color: "#f59e0b" };
@@ -16,9 +18,16 @@ function getCurrentGreeting() {
 }
 
 export default function DashboardPage() {
+  const { user, profile } = useAuthStore();
   const currentDate = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
   const greeting = getCurrentGreeting();
   const Icon = greeting.icon;
+
+  const getInitials = () => {
+    if (user?.displayName) return user.displayName[0].toUpperCase();
+    if (user?.email) return user.email[0].toUpperCase();
+    return 'A';
+  };
 
   return (
     <div className="dashboard-page">
@@ -35,16 +44,22 @@ export default function DashboardPage() {
               <Icon size={24} color={greeting.color} />
             </div>
             <h1 className="dashboard-header__title">
-              {greeting.text}, Amal.
+              {greeting.text}, {user?.displayName?.split(' ')[0] || 'User'}.
             </h1>
           </div>
           <p className="dashboard-header__date">{currentDate}</p>
         </div>
 
         <div className="dashboard-header__user">
-          <div className="dashboard-header__avatar">A</div>
+          <div className="dashboard-header__avatar overflow-hidden">
+            {profile?.avatarUrl ? (
+              <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              getInitials()
+            )}
+          </div>
           <div className="dashboard-header__user-info">
-            <span className="dashboard-header__user-name">Amal Krishna</span>
+            <span className="dashboard-header__user-name">{user?.displayName || "Amal Krishna"}</span>
             <span className="dashboard-header__user-role">Family Admin</span>
           </div>
         </div>

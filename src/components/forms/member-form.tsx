@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select } from "@/components/ui/select"
+import { AvatarUpload } from "@/components/ui/avatar-upload"
+import { useAuthStore } from "@/store/auth-store"
+import { useEffect } from "react"
 
 const formSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -15,6 +18,7 @@ const formSchema = z.object({
   aadhaar: z.string().regex(/^\d{12}$/, "Aadhaar must be 12 digits").optional().or(z.literal('')),
   mobile: z.string().regex(/^\d{10}$/, "Mobile must be 10 digits").optional().or(z.literal('')),
   email: z.string().email("Invalid email").optional().or(z.literal('')),
+  avatarUrl: z.string().optional().nullable(),
 })
 
 type MemberFormValues = z.infer<typeof formSchema>
@@ -25,6 +29,7 @@ interface MemberFormProps {
 }
 
 export default function MemberForm({ onSuccess, initialData }: MemberFormProps) {
+  const { profile, user } = useAuthStore()
   const form = useForm<MemberFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
@@ -34,8 +39,19 @@ export default function MemberForm({ onSuccess, initialData }: MemberFormProps) 
       aadhaar: "",
       mobile: "",
       email: "",
+      avatarUrl: null,
     },
   })
+
+  const relationship = form.watch("relationship")
+
+  useEffect(() => {
+    if (relationship === "You/Admin" && profile?.avatarUrl) {
+      form.setValue("avatarUrl", profile.avatarUrl)
+      if (user?.displayName) form.setValue("name", user.displayName)
+      if (user?.email) form.setValue("email", user.email)
+    }
+  }, [relationship, profile, user, form])
 
   async function onSubmit(values: MemberFormValues) {
     try {
@@ -63,7 +79,16 @@ export default function MemberForm({ onSuccess, initialData }: MemberFormProps) 
   const { formState: { errors, isSubmitting } } = form;
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" style={{marginTop:"20px"}}>
+      <div className="flex justify-center py-2">
+        <AvatarUpload 
+          value={form.watch("avatarUrl")} 
+          onChange={(url) => form.setValue("avatarUrl", url)}
+          userId={relationship === "You/Admin" ? user?.uid : undefined}
+          folder="members"
+        />
+      </div>
+
       <div className="space-y-2" style={{marginTop:"15px"}}>
         <Label htmlFor="name" className="text-[13px] font-bold text-[var(--text-secondary)] ml-1">Full Name</Label>
         <Input id="name" placeholder="e.g. John Doe" {...form.register("name")} disabled={isSubmitting} className="bg-[var(--bg-base)] border-transparent focus:bg-[var(--bg-surface)]" />
@@ -74,6 +99,7 @@ export default function MemberForm({ onSuccess, initialData }: MemberFormProps) 
         <div className="space-y-2">
           <Label htmlFor="relationship" className="text-[13px] font-bold text-[var(--text-secondary)] ml-1">Relationship</Label>
           <Select id="relationship" {...form.register("relationship")} disabled={isSubmitting} className="bg-[var(--bg-base)] border-transparent focus:bg-[var(--bg-surface)]">
+            <option>You/Admin</option>
             <option>Father</option>
             <option>Mother</option>
             <option>Husband</option>
@@ -120,3 +146,4 @@ export default function MemberForm({ onSuccess, initialData }: MemberFormProps) 
     </form>
   )
 }
+
