@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 import { NotificationProvider } from "@/components/ui/notification-manager";
 import { NotificationChecker } from "@/components/ui/notification-checker";
 import { AuthProvider } from "@/components/auth/auth-provider";
+import { IntroVideo } from "@/components/ui/intro-video";
 
 export default async function LocaleLayout({
   children,
@@ -49,6 +50,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
             <NotificationProvider>
+              <IntroVideo />
               <NotificationChecker />
               {children}
             </NotificationProvider>

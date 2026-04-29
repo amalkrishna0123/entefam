@@ -40,13 +40,13 @@ export default function AIInsights() {
       <CardHeader className="pb-4">
         <div className="flex justify-between items-center w-full">
           <CardTitle className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2.5">
-            <div className="p-2 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-xl shadow-sm text-white">
+            <div className="p-2 text-[#facc15] rounded-[5px] shadow-sm bg-[#111111ff]">
               <Sparkles size={18} />
             </div>
             AI Insights & Suggestions
           </CardTitle>
           <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--accent-muted)] rounded-full">
-            <Bot size={18} className="text-blue-600" />
+            <Bot size={18} className="text-[#111111ff]" />
             {/* <span className="text-[10px] text-[var(--text-secondary)] font-bold uppercase tracking-wider">
               Powered by AI
             </span> */}

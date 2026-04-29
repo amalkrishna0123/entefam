@@ -85,7 +85,7 @@ export default function HealthMetricDashboard({ metric, memberId, memberName }: 
     if (range === "all") return records
     const now = new Date()
     const days = range === "1w" ? 7 : 30
-    const cutoff = new Date(now.setDate(now.getDate() - days))
+    const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000)
     return records.filter(r => new Date(r.date) >= cutoff)
   }, [records, range])
 // ... (rest of the logic remains same, but I'll need to update the table rendering)

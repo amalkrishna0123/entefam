@@ -81,10 +81,10 @@ export default function ExpenseSummary() {
   ];
 
   const colorMap = {
-    blue:    { bg: 'rgba(30, 64, 175, 0.08)',   icon: '#1e40af' },
-    emerald: { bg: 'rgba(5, 150, 105, 0.08)',   icon: '#059669' },
-    orange:  { bg: 'rgba(217, 119, 6, 0.08)',   icon: '#d97706' },
-    purple:  { bg: 'rgba(124, 58, 237, 0.08)',  icon: '#7c3aed' },
+    blue:    { bg: '#111111ff',   icon: '#facc15' },
+    emerald: { bg: '#111111ff',   icon: '#facc15' },
+    orange:  { bg: '#111111ff',   icon: '#facc15' },
+    purple:  { bg: '#111111ff',  icon: '#facc15' },
   };
 
   return (

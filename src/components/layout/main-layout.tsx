@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
+import Link from "next/link"
 import Sidebar from "./sidebar"
 import NotificationCenter from "./notification-center"
-
+import { useAuthStore } from "@/store/auth-store"
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const pathname = usePathname()
+  const { user, profile } = useAuthStore()
 
   // Close sidebar when route changes
   useEffect(() => {
@@ -76,8 +78,32 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               }} 
             />
           </div>
-          <div style={{ marginLeft: "auto"}}>
+          <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "16px" }}>
             <NotificationCenter />
+            <Link href="/settings">
+              <div 
+                style={{ 
+                  width: "32px", 
+                  height: "32px", 
+                  borderRadius: "50%", 
+                  background: "var(--bg-subtle)", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  color: "var(--text-primary)",
+                  overflow: "hidden",
+                  border: "1px solid var(--border-strong)"
+                }}
+              >
+                {profile?.avatarUrl ? (
+                  <img src={profile.avatarUrl} alt="Avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                ) : (
+                  user?.displayName ? user.displayName[0].toUpperCase() : (user?.email ? user.email[0].toUpperCase() : '?')
+                )}
+              </div>
+            </Link>
           </div>
         </header>
 

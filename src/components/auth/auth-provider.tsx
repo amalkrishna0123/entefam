@@ -48,16 +48,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe()
   }, [setUser, router, pathname])
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-[var(--bg-base)]">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-[var(--text-secondary)] font-medium">Loading FamilyOS...</p>
+  return (
+    <>
+      {loading && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[var(--bg-base)]">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[var(--text-secondary)] font-medium">Loading FamilyOS...</p>
+          </div>
         </div>
+      )}
+      <div 
+        style={{ 
+          display: loading ? 'none' : 'flex', 
+          minHeight: '100vh', 
+          flexDirection: 'column' 
+        }} 
+        className={loading ? 'hidden-auth' : ''}
+      >
+        {children}
       </div>
-    )
-  }
-
-  return <>{children}</>
+    </>
+  )
 }

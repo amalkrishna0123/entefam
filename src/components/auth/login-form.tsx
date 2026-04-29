@@ -32,15 +32,15 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
       {error && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-200 flex items-center gap-2 text-red-600 text-sm">
+        <div style={{ padding: '12px', borderRadius: '8px', backgroundColor: '#fef2f2', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', gap: '8px', color: '#dc2626', fontSize: '14px' }}>
           <AlertCircle size={16} />
           {error}
         </div>
       )}
-      <div className="space-y-2">
-        <Label htmlFor="email">Email address</Label>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Label htmlFor="email" style={{ fontSize: '14px', fontWeight: 500, color: '#374151' }}>Email address</Label>
         <Input 
           id="email" 
           type="email" 
@@ -48,12 +48,13 @@ export default function LoginForm() {
           {...register("email")} 
           required 
           defaultValue="amalkrishna2001ma@gmail.com"
+          style={{ width: '100%' }}
         />
       </div>
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="password">Password</Label>
-          <Link href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Label htmlFor="password" style={{ fontSize: '14px', fontWeight: 500, color: '#374151' }}>Password</Label>
+          <Link href="#" style={{ fontSize: '14px', fontWeight: 500, color: '#1f1f1fff', textDecoration: 'none' }}>
             Forgot password?
           </Link>
         </div>
@@ -63,11 +64,12 @@ export default function LoginForm() {
           {...register("password")} 
           required 
           defaultValue="1234"
+          style={{ width: '100%' }}
         />
       </div>
-      <Button type="submit" className="w-full" disabled={loading}>
+      <Button type="submit" style={{ width: '100%', marginTop: '8px' }} disabled={loading}>
         {loading ? (
-          <span className="flex items-center gap-2">
+          <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
             <Loader2 className="animate-spin" size={18} />
             Signing in...
           </span>
@@ -75,9 +77,9 @@ export default function LoginForm() {
           "Sign in"
         )}
       </Button>
-      <div className="text-center text-sm text-gray-600">
+      <div style={{ textAlign: 'center', fontSize: '14px', color: '#4b5563', marginTop: '16px' }}>
         Don't have an account?{" "}
-        <Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+        <Link href="/register" style={{ fontWeight: 500, color: '#212121ff', textDecoration: 'none' }}>
           Sign up
         </Link>
       </div>

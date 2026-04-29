@@ -32,7 +32,7 @@ export default function NotificationCenter() {
   };
 
   return (
-    <div className="relative" ref={dropdownRef} style={{padding:"20px"}}>
+    <div className="relative" ref={dropdownRef} style={{padding:"10px"}}>
       {/* Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -41,7 +41,7 @@ export default function NotificationCenter() {
       >
         <Bell 
           size={22} 
-          className={`transition-colors ${unreadCount > 0 ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)]'}`}
+          className={`transition-colors ${unreadCount > 0 ? 'text-[#f6ca5f]' : 'text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)]'}`}
         />
         
         {unreadCount > 0 && (

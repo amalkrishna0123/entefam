@@ -57,7 +57,7 @@ export default function ExpensesPage() {
             Total Monthly Spend
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl md:text-4xl font-black tracking-tighter">
+            <span className="text-xl md:text-4xl font-black tracking-tighter text-[#111111ff]">
               {formatCurrency(totalExpenses)}
             </span>
             <span className="text-sm font-bold opacity-40">

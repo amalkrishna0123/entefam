@@ -14,23 +14,23 @@ export default function RegisterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="fullname">Full Name</Label>
-        <Input id="fullname" placeholder="John Doe" {...register("fullname")} required />
+    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Label htmlFor="fullname" style={{ fontSize: '14px', fontWeight: 500, color: '#374151' }}>Full Name</Label>
+        <Input id="fullname" placeholder="John Doe" {...register("fullname")} required style={{ width: '100%' }} />
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="email">Email address</Label>
-        <Input id="email" type="email" placeholder="john@example.com" {...register("email")} required />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Label htmlFor="email" style={{ fontSize: '14px', fontWeight: 500, color: '#374151' }}>Email address</Label>
+        <Input id="email" type="email" placeholder="john@example.com" {...register("email")} required style={{ width: '100%' }} />
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input id="password" type="password" {...register("password")} required />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Label htmlFor="password" style={{ fontSize: '14px', fontWeight: 500, color: '#374151' }}>Password</Label>
+        <Input id="password" type="password" {...register("password")} required style={{ width: '100%' }} />
       </div>
-      <Button type="submit" className="w-full">Create account</Button>
-      <div className="text-center text-sm text-gray-600">
+      <Button type="submit" style={{ width: '100%', marginTop: '8px' }}>Create account</Button>
+      <div style={{ textAlign: 'center', fontSize: '14px', color: '#4b5563', marginTop: '16px' }}>
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+        <Link href="/login" style={{ fontWeight: 500, color: '#4f46e5', textDecoration: 'none' }}>
           Sign in
         </Link>
       </div>

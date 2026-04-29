@@ -51,7 +51,7 @@ export default function UpcomingEvents() {
           </div>
         ) : (
           <div className="db-list">
-            {events
+            {[...events]
               .sort((a, b) => {
                 const priorityOrder: Record<string, number> = { 'High': 0, 'Medium': 1, 'Low': 2 };
                 const aP = priorityOrder[a.priority] ?? 3;

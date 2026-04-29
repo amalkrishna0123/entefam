@@ -45,10 +45,10 @@ export default function HealthPage() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.75rem', borderRadius: '9999px', backgroundColor: 'var(--accent-muted)', color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', width: 'fit-content' }}>
             Health Management
           </div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--text-primary)', margin: 0 }} className="md:text-6xl">
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 500, letterSpacing: '-0.025em', color: 'var(--text-primary)', margin: 0 }} className="md:text-6xl">
             Health Tracking
           </h1>
-          <p style={{ color: 'var(--text-tertiary)', fontSize: '1.125rem', fontWeight: 500, maxWidth: '42rem', margin: 0 }}>
+          <p className='hidden md:block' style={{ color: 'var(--text-tertiary)', fontSize: '1.125rem', fontWeight: 500, maxWidth: '42rem', margin: 0 }}>
             Monitor vitals and track wellness progress for <span style={{ color: 'var(--text-secondary)' }}>{selectedMemberName}</span>.
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function HealthPage() {
             style={{ height: '3rem', paddingLeft: '2rem', paddingRight: '2rem', borderRadius: '1rem', backgroundColor: 'var(--accent)', color: 'white', boxShadow: '0 20px 25px -5px rgba(var(--accent-rgb), 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}
           >
             <Plus size={22} strokeWidth={3} />
-            <span>Log Metric</span>
+            <span className='text-white' style={{color:"white"}}>Log Metric</span>
           </Button>
         </div>
       </div>
