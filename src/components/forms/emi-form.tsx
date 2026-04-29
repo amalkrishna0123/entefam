@@ -12,6 +12,7 @@ const formSchema = z.object({
   emiName: z.string().min(2, "EMI Name is required"),
   amount: z.string().min(1, "Amount is required"),
   dueDate: z.string().min(1, "Due date is required"),
+  financeProvider: z.string().optional(),
 })
 
 export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
@@ -22,6 +23,7 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
       emiName: "",
       amount: "",
       dueDate: new Date().toISOString().split('T')[0],
+      financeProvider: "Bajaj Finserv",
     },
   })
 
@@ -37,6 +39,7 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
           emiName: "",
           amount: "",
           dueDate: new Date().toISOString().split('T')[0],
+          financeProvider: "Bajaj Finserv",
         });
         onSuccess?.();
         sendNotification(
@@ -57,6 +60,40 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
         <Label htmlFor="emiName">EMI Name</Label>
         <Input id="emiName" placeholder="e.g. Home Loan" {...form.register("emiName")} disabled={isSubmitting} />
         {errors.emiName && <p className="text-[11px] text-[var(--danger)]">{errors.emiName.message}</p>}
+      </div>
+
+      <div className="space-y-2" style={{marginTop:"15px"}}>
+        <Label htmlFor="financeProvider">Finance Provider</Label>
+        <select 
+          id="financeProvider" 
+          {...form.register("financeProvider")} 
+          disabled={isSubmitting}
+          style={{
+            display: 'block',
+            width: '100%',
+            borderRadius: '0.75rem',
+            border: '1px solid var(--border)',
+            backgroundColor: 'var(--bg-elevated)',
+            padding: '0.625rem 1rem',
+            color: 'var(--text-primary)',
+            transition: 'all 0.3s ease',
+            outline: 'none',
+          }}
+        >
+          <option>Bajaj Finserv</option>
+          <option>HDB Financial Services</option>
+          <option>Muthoot Finance</option>
+          <option>Manappuram Finance</option>
+          <option>Kerala State Financial Enterprises (KSFE)</option>
+          <option>Federal Bank</option>
+          <option>South Indian Bank</option>
+          <option>Kerala Gramin Bank</option>
+          <option>Canara Bank</option>
+          <option>SBI</option>
+          <option>HDFC Bank</option>
+          <option>ICICI Bank</option>
+          <option>Other</option>
+        </select>
       </div>
       <div className="space-y-2 relative" style={{marginTop:"15px"}}>
         <Label htmlFor="amount">Monthly Amount</Label>

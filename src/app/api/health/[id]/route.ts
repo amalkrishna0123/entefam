@@ -9,7 +9,7 @@ export async function PATCH(
   try {
     const { id } = await context.params;
     const body = await request.json();
-    const docRef = doc(db, 'health', id);
+    const docRef = doc(db, 'healthRecords', id);
     await updateDoc(docRef, {
       ...body,
       updatedAt: new Date().toISOString(),
@@ -27,7 +27,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await context.params;
-    const docRef = doc(db, 'health', id);
+    const docRef = doc(db, 'healthRecords', id);
     await deleteDoc(docRef);
     return NextResponse.json({ success: true });
   } catch (error) {

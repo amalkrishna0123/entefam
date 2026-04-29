@@ -13,6 +13,7 @@ interface Event {
   title: string
   date: string
   location?: string
+  priority?: "Low" | "Medium" | "High"
 }
 
 export default function EventList() {
@@ -27,7 +28,15 @@ export default function EventList() {
     try {
       const res = await fetch("/api/events")
       const data = await res.json()
-      setEvents(data)
+      // Sort by priority and then date
+      const sortedData = (data as Event[]).sort((a, b) => {
+        const priorityOrder: Record<string, number> = { 'High': 0, 'Medium': 1, 'Low': 2 };
+        const aP = priorityOrder[a.priority || "Medium"] ?? 1;
+        const bP = priorityOrder[b.priority || "Medium"] ?? 1;
+        if (aP !== bP) return aP - bP;
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
+      setEvents(sortedData)
     } catch (error) {
       console.error("Failed to fetch events:", error)
     } finally {
@@ -67,6 +76,7 @@ export default function EventList() {
           title: editEvent.title,
           date: editEvent.date,
           location: editEvent.location,
+          priority: editEvent.priority,
         }),
       })
       if (res.ok) {
@@ -111,7 +121,15 @@ export default function EventList() {
                 </svg>
               </div>
               <div className="min-w-0">
-                <h4 className="font-medium text-[var(--text-primary)] truncate">{event.title}</h4>
+                <div className="flex items-center gap-2">
+                  <h4 className="font-medium text-[var(--text-primary)] truncate">{event.title}</h4>
+                  {event.priority === "High" && (
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600 border border-red-200 uppercase tracking-tight">High Priority</span>
+                  )}
+                  {event.priority === "Medium" && (
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-yellow-100 text-yellow-600 border border-yellow-200 uppercase tracking-tight">Medium</span>
+                  )}
+                </div>
                 <div className="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mt-0.5">
                   <span>{new Date(event.date).toLocaleDateString()}</span>
                   {event.location && (
@@ -155,6 +173,29 @@ export default function EventList() {
             <div className="space-y-2">
               <Label htmlFor="edit-location">Location</Label>
               <Input id="edit-location" value={editEvent.location || ""} onChange={(e) => setEditEvent({...editEvent, location: e.target.value})} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-priority">Priority</Label>
+              <select 
+                id="edit-priority" 
+                value={editEvent.priority || "Medium"} 
+                onChange={(e) => setEditEvent({...editEvent, priority: e.target.value as any})}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  borderRadius: '0.75rem',
+                  border: '1px solid var(--border)',
+                  backgroundColor: 'var(--bg-elevated)',
+                  padding: '0.625rem 1rem',
+                  color: 'var(--text-primary)',
+                  transition: 'all 0.3s ease',
+                  outline: 'none',
+                }}
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
             </div>
             <div className="flex justify-end gap-3 pt-2">
               <Button variant="outline" type="button" onClick={() => setEditEvent(null)}>Cancel</Button>

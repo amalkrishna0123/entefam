@@ -5,6 +5,7 @@ import { RowSkeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { CalendarDays, MapPin, Clock, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 export default function UpcomingEvents() {
@@ -50,7 +51,15 @@ export default function UpcomingEvents() {
           </div>
         ) : (
           <div className="db-list">
-            {events.slice(0, 4).map((event, i) => (
+            {events
+              .sort((a, b) => {
+                const priorityOrder: Record<string, number> = { 'High': 0, 'Medium': 1, 'Low': 2 };
+                const aP = priorityOrder[a.priority] ?? 3;
+                const bP = priorityOrder[b.priority] ?? 3;
+                if (aP !== bP) return aP - bP;
+                return new Date(a.date).getTime() - new Date(b.date).getTime();
+              })
+              .slice(0, 2).map((event, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -10 }}
@@ -88,10 +97,13 @@ export default function UpcomingEvents() {
                 {/* Badge */}
                 <div className="db-event__badge-wrap">
                   <Badge
-                    variant={i === 0 ? "accent" : "outline"}
-                    className="db-event__category-badge"
+                    variant={event.priority === "High" ? "accent" : "outline"}
+                    className={cn(
+                      "db-event__category-badge",
+                      event.priority === "High" && "bg-red-500/10 text-red-500 border-red-500/20"
+                    )}
                   >
-                    {event.category || "General"}
+                    {event.priority ? `${event.priority} Priority` : (event.category || "General")}
                   </Badge>
                 </div>
               </motion.div>

@@ -15,6 +15,7 @@ interface EMI {
   emiName: string
   amount: string
   dueDate: string
+  financeProvider?: string
 }
 
 export default function EmiList() {
@@ -69,6 +70,7 @@ export default function EmiList() {
           emiName: editEmi.emiName,
           amount: editEmi.amount,
           dueDate: editEmi.dueDate,
+          financeProvider: editEmi.financeProvider,
         }),
       })
       if (res.ok) {
@@ -161,6 +163,12 @@ export default function EmiList() {
                   </div>
                   <div className="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mt-0.5">
                     <span>{status.label} · {format(status.date, 'MMM dd, yyyy')}</span>
+                    {emi.financeProvider && (
+                      <>
+                        <span>·</span>
+                        <span className="font-bold text-[var(--accent)]">{emi.financeProvider}</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -209,6 +217,39 @@ export default function EmiList() {
                 required 
                 className="block w-full rounded-xl border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-2.5 text-[var(--text-primary)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-provider">Finance Provider</Label>
+              <select 
+                id="edit-provider" 
+                value={editEmi.financeProvider || "Bajaj Finserv"} 
+                onChange={(e) => setEditEmi({...editEmi, financeProvider: e.target.value})}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  borderRadius: '0.75rem',
+                  border: '1px solid var(--border)',
+                  backgroundColor: 'var(--bg-elevated)',
+                  padding: '0.625rem 1rem',
+                  color: 'var(--text-primary)',
+                  transition: 'all 0.3s ease',
+                  outline: 'none',
+                }}
+              >
+                <option>Bajaj Finserv</option>
+                <option>HDB Financial Services</option>
+                <option>Muthoot Finance</option>
+                <option>Manappuram Finance</option>
+                <option>Kerala State Financial Enterprises (KSFE)</option>
+                <option>Federal Bank</option>
+                <option>South Indian Bank</option>
+                <option>Kerala Gramin Bank</option>
+                <option>Canara Bank</option>
+                <option>SBI</option>
+                <option>HDFC Bank</option>
+                <option>ICICI Bank</option>
+                <option>Other</option>
+              </select>
             </div>
             <div className="flex justify-end gap-3 pt-2">
               <Button variant="outline" type="button" onClick={() => setEditEmi(null)}>Cancel</Button>

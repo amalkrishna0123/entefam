@@ -42,3 +42,24 @@ export async function analyzeHealth(metrics: any[]) {
   }
 }
 
+export async function getHealthComparisonInsight(metric: string, memberName: string, currentVal: string, previousVal: string) {
+  const prompt = encodeURIComponent(`Metric: ${metric}, Member: ${memberName}, Current Value: ${currentVal}, Previous Value: ${previousVal}. 
+Compare these values. 
+If there is improvement (e.g., weight reduced, steps increased), provide a positive, encouraging message.
+If there is no change, provide a motivational message.
+If the value has worsened or increased in a non-ideal way, provide a constructive and motivational message.
+Keep it to one or two sentences maximum. Direct and personal.`);
+
+  try {
+    const res = await fetch(`https://gen.pollinations.ai/text/${prompt}`, {
+      headers: {
+        'Authorization': 'Bearer sk_XctNYsAVsBlMQzKp654gMdRjRQlBZWLC'
+      }
+    });
+    if (!res.ok) return "Keep up the consistent tracking for better insights!";
+    return await res.text();
+  } catch (error) {
+    return "Great job on tracking! Consistency is the first step to health.";
+  }
+}
+

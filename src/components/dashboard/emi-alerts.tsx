@@ -48,7 +48,7 @@ export default function EMIAlerts() {
           </div>
         ) : (
           <div className="db-list">
-            {alerts.slice(0, 3).map((alert, i) => (
+            {alerts.slice(0, 2).map((alert, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
@@ -59,6 +59,11 @@ export default function EMIAlerts() {
                 <div className="db-emi__info">
                   <div className="db-emi__name">
                     {alert.emiName || alert.title || 'EMI Due'}
+                    {alert.financeProvider && (
+                      <span className="ml-2 text-[10px] font-bold text-[var(--text-tertiary)] bg-[var(--bg-elevated)] px-1.5 py-0.5 rounded border border-[var(--border)] uppercase tracking-wider">
+                        {alert.financeProvider}
+                      </span>
+                    )}
                   </div>
                   <div className="db-emi__due">
                     <span className="db-emi__dot" />

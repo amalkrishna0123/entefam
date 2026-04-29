@@ -12,6 +12,7 @@ const formSchema = z.object({
   title: z.string().min(2, "Title is required"),
   date: z.string().min(1, "Date is required"),
   location: z.string().optional(),
+  priority: z.enum(["Low", "Medium", "High"]),
 })
 
 export default function EventForm({ onSuccess }: { onSuccess?: () => void }) {
@@ -22,6 +23,7 @@ export default function EventForm({ onSuccess }: { onSuccess?: () => void }) {
       title: "",
       date: new Date().toISOString().split('T')[0],
       location: "",
+      priority: "Medium",
     },
   })
 
@@ -67,6 +69,31 @@ export default function EventForm({ onSuccess }: { onSuccess?: () => void }) {
         <Label htmlFor="location">Location (Optional)</Label>
         <Input id="location" placeholder="Where is it?" {...form.register("location")} disabled={isSubmitting} />
       </div>
+
+      <div className="space-y-2" style={{marginTop:"15px"}}>
+        <Label htmlFor="priority">Priority</Label>
+        <select 
+          id="priority" 
+          {...form.register("priority")} 
+          disabled={isSubmitting}
+          style={{
+            display: 'block',
+            width: '100%',
+            borderRadius: '0.75rem',
+            border: '1px solid var(--border)',
+            backgroundColor: 'var(--bg-elevated)',
+            padding: '0.625rem 1rem',
+            color: 'var(--text-primary)',
+            transition: 'all 0.3s ease',
+            outline: 'none',
+          }}
+        >
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+
       <Button type="submit" className="w-full mt-2" style={{marginTop:"15px"}} loading={isSubmitting}>
         Create Event
       </Button>

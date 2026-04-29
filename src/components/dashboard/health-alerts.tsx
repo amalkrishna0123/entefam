@@ -47,7 +47,7 @@ export default function HealthAlerts() {
           </div>
         ) : (
           <div className="db-list">
-            {alerts.slice(0, 3).map((alert, i) => (
+            {alerts.slice(0, 2).map((alert, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
