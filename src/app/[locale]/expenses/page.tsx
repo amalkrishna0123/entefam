@@ -37,27 +37,27 @@ export default function ExpensesPage() {
 
   return (
     <div className="space-y-12 animate-fade-in py-4">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6" style={{marginBottom:"20px"}}>
-        <div className="flex flex-col gap-3">
-          <h1 className="text-2xl md:text-5xl text-center md:text-left tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-8">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
             Expenses
           </h1>
-          <p className="text-[var(--text-secondary)] text-sm md:text-xl text-center md:text-left font-medium">
+          <p className="text-[var(--text-secondary)] text-lg md:text-xl font-medium">
             Manage and track your family's spending.
           </p>
         </div>
 
-        <div style={{padding:"20px"}} className={`
-          p-6 rounded-3xl border transition-all duration-500
+        <div className={`
+          p-6 rounded-3xl border transition-all duration-500 min-w-[280px]
           ${isOverBudget 
-            ? 'bg-red-500/10 border-red-500/20 text-red-500 shadow-[0_0_40px_rgba(239,68,68,0.1)]' 
-            : 'bg-[var(--bg-elevated)] border-[var(--border)] text-[var(--text-primary)]'}
+            ? 'bg-red-500/10 border-red-500/20 text-red-500 shadow-[0_0_40px_rgba(239,68,68,0.05)]' 
+            : 'bg-[var(--bg-elevated)] border-[var(--border)] text-[var(--text-primary)] shadow-sm'}
         `}>
-          <div className="text-[12px] font-bold uppercase tracking-wider opacity-60 mb-1">
+          <div className="text-[11px] font-bold uppercase tracking-widest opacity-60 mb-2">
             Total Monthly Spend
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-xl md:text-4xl font-black tracking-tighter text-[#111111ff]">
+            <span className="text-3xl md:text-4xl font-black tracking-tighter">
               {formatCurrency(totalExpenses)}
             </span>
             <span className="text-sm font-bold opacity-40">
@@ -73,9 +73,9 @@ export default function ExpensesPage() {
         </div>
       </div>
       
-      <div className="grid gap-8 lg:grid-cols-3">
+      <div className="grid gap-8 lg:grid-cols-3 items-start">
         <div className="lg:col-span-1">
-          <Card className="h-full">
+          <Card className="h-auto">
             <CardHeader>
               <CardTitle>Add New Expense</CardTitle>
             </CardHeader>
@@ -85,8 +85,8 @@ export default function ExpensesPage() {
           </Card>
         </div>
 
-        <div className="lg:col-span-2">
-          <Card className="md:h-full">
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          <Card>
             <CardHeader>
               <CardTitle>Expense Analysis</CardTitle>
             </CardHeader>
@@ -94,17 +94,17 @@ export default function ExpensesPage() {
               <ExpenseChart key={`chart-${refreshKey}`} />
             </CardContent>
           </Card>
-          <div className="mt-8">
-            <AIInsights />
-          </div>
+          <AIInsights />
         </div>
       </div>
 
-      <div className="space-y-4" style={{marginTop:"20px"}} >
-        <div className="flex items-center justify-between" style={{marginBottom:"20px"}}>
-          <h2 className="text-xl font-semibold text-[var(--text-primary)]">Recent Expenses</h2>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between border-b border-[var(--border)] pb-4">
+          <h2 className="text-2xl font-bold text-[var(--text-primary)]">Recent Expenses</h2>
         </div>
-        <ExpenseList key={`list-${refreshKey}`} />
+        <div className="rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)]">
+          <ExpenseList key={`list-${refreshKey}`} />
+        </div>
       </div>
     </div>
   );

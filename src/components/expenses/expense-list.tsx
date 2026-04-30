@@ -106,50 +106,50 @@ export default function ExpenseList() {
   return (
     <div className="space-y-3">
       {expenses.map((expense) => (
-        <Card key={expense.id} className="p-4 hover:border-[var(--border-accent)] transition-colors group" style={{padding:"20px",marginBottom:"10px"}}>
-          <div className="flex items-center justify-between gap-4">
+        <Card key={expense.id} className="p-4 hover:bg-[var(--bg-elevated)] transition-all group border-none shadow-none rounded-none first:rounded-t-2xl last:rounded-b-2xl border-b last:border-b-0 border-[var(--border)]">
+          <div className="flex items-center justify-between gap-4 py-1">
             <div className="flex items-center gap-4 min-w-0">
-              <div className="w-10 h-10 rounded-full bg-[var(--accent-muted)] flex items-center justify-center text-[var(--accent)] shrink-0">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <div className="w-12 h-12 rounded-2xl bg-[var(--accent-muted)] flex items-center justify-center text-[var(--accent)] shrink-0 shadow-sm">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="9" />
                   <path d="M12 6v12M9 9.5c0-1 1.343-2 3-2s3 1 3 2-1.343 2-3 2-3 1-3 2 1.343 2 3 2 3-1 3-2" />
                 </svg>
               </div>
               <div className="min-w-0">
-                <h4 className="font-medium text-[var(--text-primary)] truncate">{expense.description}</h4>
-                <div className="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mt-0.5">
-                  <span className="px-1.5 py-0.5 bg-[var(--bg-subtle)] rounded text-[var(--text-secondary)]">
+                <h4 className="font-bold text-[var(--text-primary)] truncate text-base md:text-lg">{expense.description}</h4>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--text-tertiary)] mt-1">
+                  <span className="px-2 py-0.5 bg-[var(--bg-subtle)] rounded-full text-[var(--text-secondary)] font-semibold border border-[var(--border)]">
                     {expense.category}
                   </span>
-                  <span>•</span>
-                  <span>{new Date(expense.date).toLocaleDateString()}</span>
+                  <span className="hidden xs:inline opacity-30">•</span>
+                  <span className="font-medium">{new Date(expense.date).toLocaleDateString()}</span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex items-center gap-2 md:gap-6 shrink-0">
               <div className="text-right">
-                <div className="font-semibold text-[var(--text-primary)]">
+                <div className="font-black text-[var(--text-primary)] text-lg md:text-xl tracking-tight">
                   {formatCurrency(parseFloat(expense.amount))}
                 </div>
               </div>
-              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  style={{ width: "32px", padding: 0 }}
+                  className="w-9 h-9 p-0 hover:bg-black/5 rounded-full"
                   onClick={() => setEditExpense(expense)}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
                   </svg>
                 </Button>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  style={{ width: "32px", padding: 0, color: "var(--danger)" }}
+                  className="w-9 h-9 p-0 hover:bg-red-50 rounded-full text-red-500"
                   onClick={() => setDeleteId(expense.id)}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                   </svg>
                 </Button>

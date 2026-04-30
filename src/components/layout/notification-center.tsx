@@ -11,8 +11,10 @@ export default function NotificationCenter() {
   const { notifications, markAsRead, markAllAsRead, clearAll, getUnreadCount } = useNotificationStore();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const unreadCount = getUnreadCount();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -30,6 +32,22 @@ export default function NotificationCenter() {
       default: return <Info className="text-blue-500" size={18} />;
     }
   };
+
+  if (!isMounted) {
+    return (
+      <div className="relative" ref={dropdownRef} style={{padding:"10px"}}>
+        <button
+          className="relative p-2 rounded-full hover:bg-[var(--bg-elevated)] transition-all duration-300 group"
+          aria-label="Notifications"
+        >
+          <Bell 
+            size={22} 
+            className="transition-colors text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)]"
+          />
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="relative" ref={dropdownRef} style={{padding:"10px"}}>
