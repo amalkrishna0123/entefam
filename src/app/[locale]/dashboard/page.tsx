@@ -5,24 +5,23 @@ import EMIAlerts from '@/components/dashboard/emi-alerts';
 import HealthAlerts from '@/components/dashboard/health-alerts';
 import QuickExpense from '@/components/dashboard/quick-expense';
 import AIInsights from '@/components/dashboard/ai-insights';
+import WeatherWidget from '@/components/dashboard/WeatherWidget';
 import { motion } from 'framer-motion';
-import { Sun, Moon, CloudSun } from 'lucide-react';
 
 import { useAuthStore } from '@/store/auth-store';
 import { formatDate } from '@/lib/date-utils';
 
 function getCurrentGreeting() {
   const hour = new Date().getHours();
-  if (hour < 12) return { text: "Good Morning", icon: Sun, color: "#f59e0b" };
-  if (hour < 18) return { text: "Good Afternoon", icon: CloudSun, color: "#3b82f6" };
-  return { text: "Good Evening", icon: Moon, color: "#6366f1" };
+  if (hour < 12) return "Good Morning";
+  if (hour < 18) return "Good Afternoon";
+  return "Good Evening";
 }
 
 export default function DashboardPage() {
   const { user, profile } = useAuthStore();
   const currentDate = formatDate(new Date());
-  const greeting = getCurrentGreeting();
-  const Icon = greeting.icon;
+  const greetingText = getCurrentGreeting();
 
   const getInitials = () => {
     if (user?.displayName) return user.displayName[0].toUpperCase();
@@ -41,11 +40,10 @@ export default function DashboardPage() {
       >
         <div className="dashboard-header__left">
           <div className="dashboard-header__greeting">
-            <div className="dashboard-header__icon-wrap">
-              <Icon size={24} color={greeting.color} />
-            </div>
+            {/* Live weather widget replaces the static icon */}
+            <WeatherWidget />
             <h1 className="dashboard-header__title">
-              {greeting.text}, {user?.displayName?.split(' ')[0] || 'User'}.
+              {greetingText}, {user?.displayName?.split(' ')[0] || 'User'}.
             </h1>
           </div>
           <p className="dashboard-header__date">{currentDate}</p>

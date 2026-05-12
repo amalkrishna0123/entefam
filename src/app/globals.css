@@ -272,7 +272,8 @@ p, span, li {
 .dashboard-header__left  { display: flex; flex-direction: column; gap: 6px; }
 .dashboard-header__greeting {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: start;
   gap: 12px;
 }
 .dashboard-header__icon-wrap {
@@ -999,3 +1000,146 @@ p, span, li {
     --bg-base-rgb: 10, 10, 10;
   }
 }
+
+/* ── WeatherWidget ───────────────────────────────────────── */
+.weather-widget {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  cursor: default;
+  flex-shrink: 0;
+  transition:
+    box-shadow var(--duration-mid) var(--ease-out),
+    transform  var(--duration-mid) var(--ease-out);
+  animation: fade-in var(--duration-mid) var(--ease-out) both;
+}
+
+.weather-widget:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.weather-widget__emoji {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.weather-widget__temp {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.weather-widget__label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+}
+
+.weather-widget__location {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+/* Locate / MapPin button */
+.weather-widget__locate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition:
+    color      var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    transform  var(--duration-fast) var(--ease-spring);
+}
+.weather-widget__locate-btn:hover:not(:disabled) {
+  color: #4f46e5;
+  background: rgba(79, 70, 229, 0.08);
+  transform: scale(1.15);
+}
+.weather-widget__locate-btn:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* Orange tint when showing fallback location */
+.weather-widget__locate-btn--fallback {
+  color: #ea580c;
+}
+.weather-widget__locate-btn--fallback:hover:not(:disabled) {
+  color: #c2410c;
+  background: rgba(234, 88, 12, 0.08);
+}
+
+/* Spinning loader */
+.weather-widget__spin {
+  animation: spin-icon 0.8s linear infinite;
+}
+@keyframes spin-icon {
+  to { transform: rotate(360deg); }
+}
+
+/* Loading skeleton */
+.weather-widget--loading {
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.weather-widget__skeleton {
+  width: 110px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--bg-subtle) 25%,
+    rgba(241, 245, 249, 0.5) 50%,
+    var(--bg-subtle) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* hide label on very small viewports */
+@media (max-width: 500px) {
+  .weather-widget__location { 
+    max-width: 150px; 
+  }
+}
+@media (max-width: 400px) {
+  .weather-widget__location { display: none; }
+}
+
