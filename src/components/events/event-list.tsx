@@ -136,13 +136,13 @@ export default function EventList() {
                 {event.title}
               </h4>
               {!isEnded && event.priority === "High" && (
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600 border border-red-200 uppercase tracking-tight">High Priority</span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600 border border-red-200 uppercase tracking-tight" style={{padding:"3px 5px"}}>High</span>
               )}
               {!isEnded && event.priority === "Medium" && (
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-yellow-100 text-yellow-600 border border-yellow-200 uppercase tracking-tight">Medium</span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-yellow-100 text-yellow-600 border border-yellow-200 uppercase tracking-tight" style={{padding:"3px 5px"}}>Medium</span>
               )}
               {isEnded && (
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[var(--bg-subtle)] text-[var(--text-tertiary)] border border-[var(--border)] uppercase tracking-tight">Ended</span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[var(--bg-subtle)] text-[var(--text-tertiary)] border border-[var(--border)] uppercase tracking-tight" style={{padding:"3px 5px"}}>Ended</span>
               )}
             </div>
             <div className="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mt-0.5">

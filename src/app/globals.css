@@ -1139,7 +1139,7 @@ p, span, li {
     max-width: 150px; 
   }
 }
-@media (max-width: 400px) {
+/* @media (max-width: 400px) {
   .weather-widget__location { display: none; }
-}
+} */
 

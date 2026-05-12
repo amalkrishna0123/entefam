@@ -119,7 +119,7 @@ export default function ExpenseList() {
               <div className="min-w-0">
                 <h4 className="font-bold text-[var(--text-primary)] truncate text-base md:text-lg" style={{marginBottom:"5px"}}>{expense.description}</h4>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--text-tertiary)] mt-1">
-                  <span className="px-2 py-0.5 bg-[var(--bg-subtle)] rounded-full text-[var(--text-secondary)] font-semibold border border-[var(--border)]">
+                  <span style={{padding:"0 10px"}} className="px-2 py-0.5 bg-[var(--bg-subtle)] rounded-full text-[var(--text-secondary)] font-semibold border border-[var(--border)]">
                     {expense.category}
                   </span>
                   <span className="hidden xs:inline opacity-30">•</span>

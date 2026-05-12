@@ -100,7 +100,7 @@ export default function MemberList() {
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 stagger">
+    <div className="grid gap-3 sm:grid-cols-2 stagger">
       {members.map((member) => (
         <Card 
           key={member.id} 
@@ -108,8 +108,8 @@ export default function MemberList() {
           onClick={() => router.push(`/${locale}/members/${member.id}`)}
         >
           <div className="flex flex-col h-full">
-            <div className="p-7">
-              <div className="flex items-start justify-between mb-8">
+            <div className="p-7" style={{padding:"10px"}}>
+              <div className="flex items-start justify-between mb-8" style={{marginBottom:"10px"}}>
                 <div className="flex items-center gap-5">
                   <div className="relative">
                     <div className="w-16 h-16 rounded-2xl bg-[var(--bg-subtle)] flex items-center justify-center text-[var(--text-primary)] border border-[var(--border-strong)] group-hover:scale-105 transition-transform duration-500 overflow-hidden shadow-sm">
@@ -125,9 +125,9 @@ export default function MemberList() {
                       <div className="w-2.5 h-2.5 rounded-full bg-[var(--success)]" />
                     </div>
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1" style={{}}>
                     <h4 className="font-black text-[var(--text-primary)] text-xl tracking-tight leading-tight">{member.name}</h4>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2" style={{marginTop:"10px"}}>
                       <Badge variant="outline" className="px-2 py-0.5 text-[9px] uppercase tracking-widest font-black bg-[var(--accent)]/5 border-[var(--accent)]/10 text-[var(--accent)] rounded-full">
                         {member.relationship}
                       </Badge>
@@ -153,13 +153,13 @@ export default function MemberList() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1 p-3 rounded-2xl bg-[var(--bg-subtle)]/30 border border-transparent group-hover:border-[var(--border-strong)] transition-all">
+                <div style={{padding:"10px"}} className="space-y-1 p-3 rounded-2xl bg-[var(--bg-subtle)]/30 border border-transparent group-hover:border-[var(--border-strong)] transition-all">
                   <span className="block text-[9px] text-[var(--text-tertiary)] font-black uppercase tracking-widest">Born</span>
                   <span className="block text-[13px] text-[var(--text-secondary)] font-bold">{formatDate(member.dob)}</span>
                 </div>
                 
                 {member.bloodGroup ? (
-                  <div className="space-y-1 p-3 rounded-2xl bg-[var(--bg-subtle)]/30 border border-transparent group-hover:border-[var(--border-strong)] transition-all">
+                  <div style={{padding:"10px"}} className="space-y-1 p-3 rounded-2xl bg-[var(--bg-subtle)]/30 border border-transparent group-hover:border-[var(--border-strong)] transition-all">
                     <span className="block text-[9px] text-[var(--text-tertiary)] font-black uppercase tracking-widest">Blood</span>
                     <div className="flex items-center gap-1.5">
                       <Droplets size={12} className="text-red-500" />
@@ -167,14 +167,14 @@ export default function MemberList() {
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-1 p-3 rounded-2xl bg-[var(--bg-subtle)]/30 border border-transparent group-hover:border-[var(--border-strong)] transition-all">
+                  <div style={{padding:"10px"}} className="space-y-1 p-3 rounded-2xl bg-[var(--bg-subtle)]/30 border border-transparent group-hover:border-[var(--border-strong)] transition-all">
                     <span className="block text-[9px] text-[var(--text-tertiary)] font-black uppercase tracking-widest">Mobile</span>
                     <span className="block text-[13px] text-[var(--text-secondary)] font-bold truncate">{member.mobile || "N/A"}</span>
                   </div>
                 )}
               </div>
 
-              <div className="mt-6 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)] pt-4 border-t border-[var(--border)] border-dashed opacity-60 group-hover:opacity-100 transition-all">
+              <div style={{marginTop:"10px",padding:"10px"}} className="mt-6 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)] pt-4 border-t border-[var(--border)] border-dashed opacity-60 group-hover:opacity-100 transition-all">
                 View Full Profile
                 <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </div>

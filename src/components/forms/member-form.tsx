@@ -86,7 +86,7 @@ export default function MemberForm({ onSuccess, initialData }: MemberFormProps) 
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-4" style={{marginTop:"15px"}}>
         <AvatarUpload 
           value={form.watch("avatarUrl")} 
           onChange={(url) => form.setValue("avatarUrl", url)}
@@ -99,14 +99,14 @@ export default function MemberForm({ onSuccess, initialData }: MemberFormProps) 
         </div>
       </div>
 
-      <div className="space-y-4 pt-4">
+      <div className="space-y-4 pt-4" style={{marginTop:"15px"}}>
         <div className="space-y-2">
           <Label htmlFor="name" className="text-[12px] font-black text-[var(--text-secondary)] uppercase tracking-wider ml-1">Full Name</Label>
           <Input id="name" placeholder="Enter full name" {...form.register("name")} disabled={isSubmitting} className="h-12 bg-[var(--bg-subtle)]/50 border-transparent focus:bg-[var(--bg-surface)] focus:ring-2 focus:ring-[var(--accent)]/20 transition-all rounded-xl text-sm" />
           {errors.name && <p className="text-[10px] font-bold text-[var(--danger)] ml-1">{errors.name.message}</p>}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4" style={{marginTop:"15px"}}>
           <div className="space-y-2">
             <Label htmlFor="relationship" className="text-[12px] font-black text-[var(--text-secondary)] uppercase tracking-wider ml-1">Relationship</Label>
             <Select id="relationship" {...form.register("relationship")} disabled={isSubmitting} className="h-12 bg-[var(--bg-subtle)]/50 border-transparent focus:bg-[var(--bg-surface)] rounded-xl text-sm">
@@ -132,7 +132,7 @@ export default function MemberForm({ onSuccess, initialData }: MemberFormProps) 
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4" style={{marginTop:"15px"}}>
           <div className="space-y-2">
             <Label htmlFor="bloodGroup" className="text-[12px] font-black text-[var(--text-secondary)] uppercase tracking-wider ml-1">Blood Group</Label>
             <Select id="bloodGroup" {...form.register("bloodGroup")} disabled={isSubmitting} className="h-12 bg-[var(--bg-subtle)]/50 border-transparent focus:bg-[var(--bg-surface)] rounded-xl text-sm">
@@ -153,13 +153,13 @@ export default function MemberForm({ onSuccess, initialData }: MemberFormProps) 
           </div>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-2" style={{marginTop:"15px"}}>
           <Label htmlFor="aadhaar" className="text-[12px] font-black text-[var(--text-secondary)] uppercase tracking-wider ml-1">Aadhaar (Optional)</Label>
           <Input id="aadhaar" placeholder="12-digit UID" {...form.register("aadhaar")} disabled={isSubmitting} className="h-12 bg-[var(--bg-subtle)]/50 border-transparent focus:bg-[var(--bg-surface)] rounded-xl text-sm font-mono tracking-widest" />
           {errors.aadhaar && <p className="text-[10px] font-bold text-[var(--danger)] ml-1">{errors.aadhaar.message}</p>}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4" style={{marginTop:"15px"}}>
           <div className="space-y-2">
             <Label htmlFor="mobile" className="text-[12px] font-black text-[var(--text-secondary)] uppercase tracking-wider ml-1">Mobile</Label>
             <Input id="mobile" placeholder="10 digits" {...form.register("mobile")} disabled={isSubmitting} className="h-12 bg-[var(--bg-subtle)]/50 border-transparent focus:bg-[var(--bg-surface)] rounded-xl text-sm" />
@@ -172,13 +172,13 @@ export default function MemberForm({ onSuccess, initialData }: MemberFormProps) 
           </div>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-2" style={{marginTop:"15px"}}>
           <Label htmlFor="address" className="text-[12px] font-black text-[var(--text-secondary)] uppercase tracking-wider ml-1">Full Address</Label>
           <Input id="address" placeholder="Residential address" {...form.register("address")} disabled={isSubmitting} className="h-12 bg-[var(--bg-subtle)]/50 border-transparent focus:bg-[var(--bg-surface)] rounded-xl text-sm" />
         </div>
       </div>
 
-      <div className="pt-4">
+      <div className="pt-4" style={{marginTop:"15px"}}>
         <Button 
           type="submit" 
           className="w-full h-14 rounded-2xl shadow-xl shadow-[var(--accent)]/10 hover:shadow-[var(--accent)]/20 transition-all font-black text-sm uppercase tracking-widest" 
