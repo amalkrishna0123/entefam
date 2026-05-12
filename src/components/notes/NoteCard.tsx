@@ -24,9 +24,16 @@ export default function NoteCard({ note, onEdit }: NoteCardProps) {
   const deleteNote = useNotesStore((state) => state.deleteNote)
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this note?")) {
-      deleteNote(note.id)
+      try {
+        const res = await fetch(`/api/notes/${note.id}`, { method: 'DELETE' });
+        if (res.ok) {
+          deleteNote(note.id);
+        }
+      } catch (e) {
+        console.error("Failed to delete note:", e);
+      }
     }
   }
 
@@ -35,7 +42,7 @@ export default function NoteCard({ note, onEdit }: NoteCardProps) {
       const isSpecialList = note.listType === 'shopping' || note.listType === 'reminder';
       const itemsToDisplay = note.listItems && note.listItems.length > 0 
         ? note.listItems 
-        : note.content.split('\n').filter(item => item.trim() !== '').map(text => ({ text, isPurchased: false, id: crypto.randomUUID() }));
+        : (note.content || "").split('\n').filter(item => item.trim() !== '').map(text => ({ text, isPurchased: false, id: crypto.randomUUID() }));
 
       return (
         <ul style={{ paddingLeft: isSpecialList ? '0' : '20px', margin: '0', listStyleType: isSpecialList ? 'none' : 'disc' }} className="space-y-2 text-[#666666] text-sm">

@@ -26,29 +26,44 @@ export default function NoteExpandedModal({ note, onClose }: NoteExpandedModalPr
     }
   }, [])
 
-  // Update store when localItems change to persist immediately (optional)
-  useEffect(() => {
-    updateNote(note.id, { listItems: localItems })
-  }, [localItems, note.id, updateNote])
+  // Update store and database when localItems change
+  const syncChanges = async (newItems: NoteListItem[]) => {
+    try {
+      await fetch(`/api/notes/${note.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ listItems: newItems })
+      });
+      updateNote(note.id, { listItems: newItems })
+    } catch (e) {
+      console.error("Failed to sync note changes:", e);
+    }
+  }
 
   const handleTogglePurchased = (id: string) => {
-    setLocalItems(prev => prev.map(item => 
+    const newItems = localItems.map(item => 
       item.id === id ? { ...item, isPurchased: !item.isPurchased, reason: undefined } : item
-    ))
+    );
+    setLocalItems(newItems);
+    syncChanges(newItems);
     if (note.expenseAdded) updateNote(note.id, { expenseAdded: false })
   }
 
   const handlePriceChange = (id: string, price: number) => {
-    setLocalItems(prev => prev.map(item => 
+    const newItems = localItems.map(item => 
       item.id === id ? { ...item, price } : item
-    ))
+    );
+    setLocalItems(newItems);
+    syncChanges(newItems);
     if (note.expenseAdded) updateNote(note.id, { expenseAdded: false })
   }
 
   const handleReasonChange = (id: string, reason: string) => {
-    setLocalItems(prev => prev.map(item => 
+    const newItems = localItems.map(item => 
       item.id === id ? { ...item, reason, isPurchased: false } : item
-    ))
+    );
+    setLocalItems(newItems);
+    syncChanges(newItems);
     if (note.expenseAdded) updateNote(note.id, { expenseAdded: false })
   }
 

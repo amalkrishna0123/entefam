@@ -7,6 +7,7 @@ import ExpenseList from '@/components/expenses/expense-list';
 import AIInsights from '@/components/dashboard/ai-insights';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
+import { Wallet } from 'lucide-react';
 
 export default function ExpensesPage() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -37,12 +38,15 @@ export default function ExpensesPage() {
 
   return (
     <div className="space-y-12 animate-fade-in py-4">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-8">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 mb-8">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
+          <h1 className="text-[20px] md:text-5xl font-bold tracking-tight text-[var(--text-primary)] flex items-center gap-3">
+            <div className="p-2 md:p-3 bg-[var(--accent-muted)] text-[var(--accent)] rounded-2xl">
+              <Wallet className="w-6 h-6 md:w-8 md:h-8" />
+            </div>
             Expenses
           </h1>
-          <p className="text-[var(--text-secondary)] text-lg md:text-xl font-medium">
+          <p className="hidden md:block text-[var(--text-secondary)] text-lg md:text-xl font-medium">
             Manage and track your family's spending.
           </p>
         </div>
@@ -52,12 +56,12 @@ export default function ExpensesPage() {
           ${isOverBudget 
             ? 'bg-red-500/10 border-red-500/20 text-red-500 shadow-[0_0_40px_rgba(239,68,68,0.05)]' 
             : 'bg-[var(--bg-elevated)] border-[var(--border)] text-[var(--text-primary)] shadow-sm'}
-        `}>
+        `} style={{padding:"15px"}}>
           <div className="text-[11px] font-bold uppercase tracking-widest opacity-60 mb-2">
             Total Monthly Spend
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl md:text-4xl font-black tracking-tighter">
+            <span className="text-[20px] md:text-4xl font-black tracking-tighter">
               {formatCurrency(totalExpenses)}
             </span>
             <span className="text-sm font-bold opacity-40">
@@ -73,7 +77,7 @@ export default function ExpensesPage() {
         </div>
       </div>
       
-      <div className="grid gap-8 lg:grid-cols-3 items-start">
+      <div style={{marginTop:"10px"}} className="grid gap-3 lg:grid-cols-3 items-start">
         <div className="lg:col-span-1">
           <Card className="h-auto">
             <CardHeader>
@@ -94,15 +98,19 @@ export default function ExpensesPage() {
               <ExpenseChart key={`chart-${refreshKey}`} />
             </CardContent>
           </Card>
-          <AIInsights />
+          {/* <AIInsights /> */}
         </div>
       </div>
 
+      <div style={{marginBottom:"15px"}}>
+        <AIInsights />
+      </div>
+
       <div className="space-y-6">
-        <div className="flex items-center justify-between border-b border-[var(--border)] pb-4">
-          <h2 className="text-2xl font-bold text-[var(--text-primary)]">Recent Expenses</h2>
+        <div className="flex items-center justify-between  pb-4">
+          <h2 className="text-[15px] font-bold text-[var(--text-primary)]" style={{marginBottom:"10px"}}>Recent Expenses</h2>
         </div>
-        <div className="rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)]">
+        <div className="overflow-hidden">
           <ExpenseList key={`list-${refreshKey}`} />
         </div>
       </div>

@@ -4,17 +4,23 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Plus } from "lucide-react"
 import NoteList from "./NoteList"
 import NoteForm from "./NoteForm"
-import { Note } from "@/store/notes-store"
+import { Note, useNotesStore } from "@/store/notes-store"
 
 export default function NotesApp() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingNote, setEditingNote] = useState<Note | null>(null)
   const [isMounted, setIsMounted] = useState(false)
+  const setNotes = useNotesStore(state => state.setNotes)
 
-  // Prevent hydration errors by only rendering after mount
   useEffect(() => {
     setIsMounted(true)
-  }, [])
+    fetch('/api/notes')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setNotes(data)
+      })
+      .catch(err => console.error("Failed to fetch notes:", err))
+  }, [setNotes])
 
   const handleOpenForm = (note?: Note) => {
     setEditingNote(note || null)
@@ -30,9 +36,9 @@ export default function NotesApp() {
 
   return (
     <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '40px 24px', fontFamily: 'inherit' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '40px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
         <div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#000000', letterSpacing: '-0.03em', margin: '0' }}>Notes</h1>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: '800', color: '#000000', letterSpacing: '-0.03em', margin: '0' }}>Notes</h1>
           <p className="hidden md:block" style={{ color: '#666666', marginTop: '8px', fontSize: '1.125rem' }}>Capture your thoughts, ideas, and tasks.</p>
         </div>
         
@@ -42,7 +48,7 @@ export default function NotesApp() {
         >
           <button onClick={() => handleOpenForm()} style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#000000', color: '#ffffff', border: 'none', padding: '12px 24px', borderRadius: '999px', fontWeight: '600', fontSize: '1rem', cursor: 'pointer', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)', transition: 'box-shadow 0.2s' }} onMouseOver={(e) => e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1)'} onMouseOut={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)'}>
             <Plus size={20} />
-            <span className="hidden sm:inline">Add Note</span>
+            <span className="hidden sm:inline text-white" style={{color:"white"}}>Add Note</span>
           </button>
         </motion.div>
       </div>

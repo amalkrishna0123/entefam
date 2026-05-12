@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { Sun, Moon, CloudSun } from 'lucide-react';
 
 import { useAuthStore } from '@/store/auth-store';
+import { formatDate } from '@/lib/date-utils';
 
 function getCurrentGreeting() {
   const hour = new Date().getHours();
@@ -19,7 +20,7 @@ function getCurrentGreeting() {
 
 export default function DashboardPage() {
   const { user, profile } = useAuthStore();
-  const currentDate = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const currentDate = formatDate(new Date());
   const greeting = getCurrentGreeting();
   const Icon = greeting.icon;
 

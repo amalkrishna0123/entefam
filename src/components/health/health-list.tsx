@@ -8,6 +8,7 @@ import { Modal } from "@/components/ui/modal"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select } from "@/components/ui/select"
+import { formatDate } from "@/lib/date-utils"
 
 interface HealthRecord {
   id: string
@@ -130,7 +131,7 @@ export default function HealthList() {
                     {members.find(m => m.id === record.memberId)?.name || 'Unknown Member'}
                   </span>
                   <span>•</span>
-                  <span>{new Date(record.date).toLocaleDateString()}</span>
+                  <span>{formatDate(record.date)}</span>
                 </div>
               </div>
             </div>

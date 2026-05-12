@@ -76,7 +76,7 @@ export function useNotifications() {
   }, [sendNotification])
 
   /** Fetch EMIs from the API and notify for approaching, due-today or overdue items */
-  const checkAndNotifyEmis = useCallback(async (approachingThreshold: number = 3) => {
+  const checkAndNotifyEmis = useCallback(async (approachingThreshold: number = 7) => {
     if (typeof window === "undefined" || Notification.permission !== "granted") return
     try {
       const res = await fetch("/api/emi")

@@ -9,9 +9,9 @@ interface NoteListProps {
 }
 
 export default function NoteList({ onEdit }: NoteListProps) {
-  const notes = useNotesStore((state) => state.notes)
+  const notes = useNotesStore((state) => state.notes) || []
 
-  if (notes.length === 0) {
+  if (!Array.isArray(notes) || notes.length === 0) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px 20px', textAlign: 'center', backgroundColor: '#fafafa', border: '2px dashed #e5e5e5', borderRadius: '24px' }}>
         <motion.div 

@@ -13,34 +13,37 @@ export default function MembersPage() {
   };
 
   return (
-    <div className="space-y-10 animate-fade-in py-6">
-      <div className="flex flex-col gap-1 max-w-2xl" style={{marginBottom:"20px"}}>
-        <h1 className="text-2xl md:text-5xl tracking-tighter text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+    <div className="max-w-7xl mx-auto space-y-10 animate-fade-in py-10 px-4 md:px-8">
+      {/* Page Header */}
+      <div className="flex flex-col gap-2 max-w-3xl">
+        <h1 className="text-4xl md:text-6xl font-black tracking-tight text-[var(--text-primary)] leading-tight">
           Family Members
         </h1>
-        <p className="hidden md:block text-[var(--text-secondary)] text-lg font-medium opacity-80">
-          Manage your family profiles and their personal information.
+        <p className="text-[var(--text-secondary)] text-lg font-medium opacity-70">
+          A centralized hub to manage and organize your family's vital information and documents.
         </p>
       </div>
       
       <div className="grid gap-10 lg:grid-cols-12 items-start">
-        <div className="lg:col-span-4 sticky top-6">
-          <Card variant="elevated" className="overflow-hidden border-[var(--border-strong)]">
-            <CardHeader className="bg-[var(--bg-subtle)]/50 border-b border-[var(--border)]">
-              <CardTitle className="text-lg">Add New Member</CardTitle>
-              <p className="text-xs text-[var(--text-tertiary)]">Create a new profile for your family.</p>
+        {/* Sidebar: Add Member */}
+        <div className="lg:col-span-4 lg:sticky lg:top-24">
+          <Card className="overflow-hidden border-[var(--border-strong)] bg-[var(--bg-surface)] shadow-2xl shadow-black/5 rounded-[2.5rem]">
+            <CardHeader className="bg-[var(--bg-subtle)]/30 border-b border-[var(--border)] px-8 py-6">
+              <CardTitle className="text-xl font-black tracking-tight">Add Member</CardTitle>
+              <p className="text-[11px] text-[var(--text-tertiary)] uppercase font-bold tracking-widest mt-1">Create a new profile</p>
             </CardHeader>
-            <CardContent className="pt-6">
+            <CardContent className="p-8">
               <MemberForm onSuccess={handleSuccess} />
             </CardContent>
           </Card>
         </div>
 
+        {/* Main Content: Member List */}
         <div className="lg:col-span-8">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between" style={{marginBottom:"10px"}}>
-              <h2 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">All Members</h2>
-              <div className="h-px flex-1 mx-4 bg-[var(--border)] opacity-50" />
+          <div className="space-y-8">
+            <div className="flex items-center gap-6">
+              <h2 className="text-2xl font-black text-[var(--text-primary)] tracking-tight whitespace-nowrap">All Members</h2>
+              <div className="h-px w-full bg-gradient-to-r from-[var(--border)] to-transparent" />
             </div>
             <MemberList key={refreshKey} />
           </div>

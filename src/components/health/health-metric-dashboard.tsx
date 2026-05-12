@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 import { Modal } from "@/components/ui/modal"
 import HealthForm from "@/components/forms/health-form"
+import { formatDate } from "@/lib/date-utils"
 
 interface HealthRecord {
   id: string
@@ -92,7 +93,7 @@ export default function HealthMetricDashboard({ metric, memberId, memberName }: 
 
   const chartData = useMemo(() => {
     return filteredByRange.map(r => ({
-      date: new Date(r.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+      date: formatDate(r.date),
       value: parseFloat(r.value.replace(/[^0-9.]/g, '')) || 0,
       originalValue: r.value
     }))
@@ -337,7 +338,7 @@ export default function HealthMetricDashboard({ metric, memberId, memberName }: 
                 {filteredByRange.slice().reverse().map((record) => (
                   <tr key={record.id} style={{ borderTop: '1px solid var(--border)', transition: 'all 0.2s ease' }}>
                     <td style={{ padding: '1.25rem 2rem', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
-                      {new Date(record.date).toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+                      {formatDate(record.date)}
                     </td>
                     <td style={{ padding: '1.25rem 2rem', fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-tertiary)' }}>
                       {memberName}

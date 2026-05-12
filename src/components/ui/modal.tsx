@@ -9,9 +9,10 @@ interface ModalProps {
   title?: string
   children: React.ReactNode
   className?: string
+  style?: React.CSSProperties
 }
 
-export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
+export function Modal({ isOpen, onClose, title, children, className, style }: ModalProps) {
   React.useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose?.()
@@ -34,19 +35,21 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
         className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
         onClick={onClose}
       />
-      <div style={{padding:"20px"}}
+      <div 
         className={cn(
           "relative w-full max-w-lg bg-[var(--bg-surface)] border border-[var(--border-strong)] rounded-2xl shadow-2xl overflow-hidden animate-fade-up",
           className
         )}
+        style={{ padding: "20px", ...style }}
       >
         {(title || onClose) && (
           <div className="flex items-center justify-between p-5 border-b border-[var(--border)]">
-            {title && <h3 className="text-lg font-semibold text-[var(--text-primary)]">{title}</h3>}
+            {title && <h3 className="text-lg font-semibold text-[var(--text-primary)]" style={{marginBottom:"10px"}}>{title}</h3>}
             {onClose && (
               <button 
                 onClick={onClose}
-                className="p-2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+                className="p-2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors" 
+                style={{marginBottom:"10px"}}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"></line>

@@ -7,6 +7,7 @@ import { CalendarDays, MapPin, Clock, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { formatDate } from '@/lib/date-utils';
 
 export default function UpcomingEvents() {
   const [events, setEvents] = useState<any[] | null>(null);
@@ -52,6 +53,13 @@ export default function UpcomingEvents() {
         ) : (
           <div className="db-list">
             {[...events]
+              .filter(event => {
+                const eventDate = new Date(event.date);
+                eventDate.setHours(0, 0, 0, 0);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                return eventDate >= today;
+              })
               .sort((a, b) => {
                 const priorityOrder: Record<string, number> = { 'High': 0, 'Medium': 1, 'Low': 2 };
                 const aP = priorityOrder[a.priority] ?? 3;
@@ -68,12 +76,12 @@ export default function UpcomingEvents() {
                 className="db-list__item group"
               >
                 {/* Date badge */}
-                <div className="db-event__date-badge">
+                <div className="db-event__date-badge" style={{width: "unset", padding: "0 8px", minWidth: "60px"}}>
                   <span className="db-event__date-month">
-                    {new Date(event.date).toLocaleDateString('en-US', { month: 'short' })}
+                    {formatDate(event.date).split('-').slice(1).join('-')}
                   </span>
                   <span className="db-event__date-day">
-                    {new Date(event.date).getDate() || '-'}
+                    {formatDate(event.date).split('-')[0]}
                   </span>
                 </div>
 

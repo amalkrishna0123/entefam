@@ -13,6 +13,7 @@ const formSchema = z.object({
   amount: z.string().min(1, "Amount is required"),
   dueDate: z.string().min(1, "Due date is required"),
   financeProvider: z.string().optional(),
+  tenure: z.string().min(1, "Tenure is required"),
 })
 
 export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
@@ -24,15 +25,21 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
       amount: "",
       dueDate: new Date().toISOString().split('T')[0],
       financeProvider: "Bajaj Finserv",
+      tenure: "12",
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      const payload = {
+        ...values,
+        paidInstallments: 0,
+        status: "Active"
+      };
       const res = await fetch('/api/emi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values)
+        body: JSON.stringify(payload)
       });
       if (res.ok) {
         form.reset({
@@ -40,11 +47,12 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
           amount: "",
           dueDate: new Date().toISOString().split('T')[0],
           financeProvider: "Bajaj Finserv",
+          tenure: "12",
         });
         onSuccess?.();
         sendNotification(
           "✅ EMI Alert Set",
-          `Alert for "${values.emiName}" (₹${parseFloat(values.amount).toLocaleString("en-IN")}) has been set.`
+          `Alert for "${values.emiName}" (₹${parseFloat(values.amount).toLocaleString("en-IN")}) for ${values.tenure} months has been set.`
         );
       }
     } catch (e) {
@@ -95,13 +103,20 @@ export default function EMIForm({ onSuccess }: { onSuccess?: () => void }) {
           <option>Other</option>
         </select>
       </div>
-      <div className="space-y-2 relative" style={{marginTop:"15px"}}>
-        <Label htmlFor="amount">Monthly Amount</Label>
-        <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)] font-medium">₹</span>
-          <Input id="amount" type="number" step="0.01" style={{ paddingLeft: "28px" }} placeholder="0.00" {...form.register("amount")} disabled={isSubmitting} />
+      <div className="grid grid-cols-2 gap-4" style={{marginTop:"15px"}}>
+        <div className="space-y-2">
+          <Label htmlFor="amount">Monthly Amount</Label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)] font-medium">₹</span>
+            <Input id="amount" type="number" step="0.01" style={{ paddingLeft: "28px" }} placeholder="0.00" {...form.register("amount")} disabled={isSubmitting} />
+          </div>
+          {errors.amount && <p className="text-[11px] text-[var(--danger)]">{errors.amount.message}</p>}
         </div>
-        {errors.amount && <p className="text-[11px] text-[var(--danger)]">{errors.amount.message}</p>}
+        <div className="space-y-2">
+          <Label htmlFor="tenure">Tenure (Months)</Label>
+          <Input id="tenure" type="number" placeholder="12" {...form.register("tenure")} disabled={isSubmitting} />
+          {errors.tenure && <p className="text-[11px] text-[var(--danger)]">{errors.tenure.message}</p>}
+        </div>
       </div>
       <div className="space-y-2" style={{marginTop:"15px"}}>
         <Label htmlFor="dueDate">EMI Date</Label>

@@ -7,6 +7,22 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { Modal } from "@/components/ui/modal"
 import MemberForm from "@/components/forms/member-form"
 import { Badge } from "@/components/ui/badge"
+import { formatDate } from "@/lib/date-utils"
+import DocumentManager from "./document-manager"
+import { Briefcase, Droplets, MapPin, ChevronRight, Edit3 } from "lucide-react"
+import { useRouter, useParams } from "next/navigation"
+
+interface DocumentImage {
+  url: string
+  label: string
+}
+
+interface MemberDocument {
+  id: string
+  name: string
+  images: DocumentImage[]
+  updatedAt?: string
+}
 
 interface Member {
   id: string
@@ -17,9 +33,16 @@ interface Member {
   mobile?: string
   email?: string
   avatarUrl?: string
+  bloodGroup?: string
+  occupation?: string
+  address?: string
+  documents?: MemberDocument[]
 }
 
 export default function MemberList() {
+  const router = useRouter()
+  const params = useParams()
+  const locale = params?.locale || 'en'
   const [members, setMembers] = useState<Member[]>([])
   const [loading, setLoading] = useState(true)
   const [deleteId, setDeleteId] = useState<string | null>(null)
@@ -79,82 +102,86 @@ export default function MemberList() {
   return (
     <div className="grid gap-6 sm:grid-cols-2 stagger">
       {members.map((member) => (
-        <Card key={member.id} className="p-0 border-[var(--border-strong)] hover:border-[var(--accent)] hover:shadow-lg group transition-all duration-500 bg-[var(--bg-surface)] overflow-hidden">
+        <Card 
+          key={member.id} 
+          className="p-0 border-[var(--border-strong)] hover:border-[var(--accent)] hover:shadow-2xl group transition-all duration-500 bg-[var(--bg-surface)] overflow-hidden cursor-pointer rounded-[2rem]"
+          onClick={() => router.push(`/${locale}/members/${member.id}`)}
+        >
           <div className="flex flex-col h-full">
-            <div className="p-6" style={{padding:"20px"}}>
-              <div className="flex items-start justify mb-6" style={{width:"100%"}}>
-                <div className="flex items-center gap-4" style={{width:"100%"}}>
+            <div className="p-7">
+              <div className="flex items-start justify-between mb-8">
+                <div className="flex items-center gap-5">
                   <div className="relative">
-                    <div className="w-14 h-14 rounded-2xl bg-[var(--bg-subtle)] flex items-center justify-center text-[var(--text-primary)] border border-[var(--border-strong)] group-hover:scale-105 transition-transform duration-500 overflow-hidden">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--bg-subtle)] flex items-center justify-center text-[var(--text-primary)] border border-[var(--border-strong)] group-hover:scale-105 transition-transform duration-500 overflow-hidden shadow-sm">
                       {member.avatarUrl ? (
                         <img src={member.avatarUrl} alt={member.name} className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-xl font-bold tracking-tighter opacity-80">
-                          {member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
-                        </span>
+                        <div className="w-full h-full bg-gradient-to-br from-[var(--bg-subtle)] to-[var(--bg-base)] flex items-center justify-center text-[var(--accent)] font-black text-xl tracking-tighter opacity-40">
+                          {member.name ? member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '?'}
+                        </div>
                       )}
                     </div>
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-strong)] flex items-center justify-center shadow-sm">
-                      <div className="w-2 h-2 rounded-full bg-[var(--success)] animate-pulse" />
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-lg bg-[var(--bg-surface)] border-2 border-[var(--bg-surface)] shadow-md flex items-center justify-center">
+                      <div className="w-2.5 h-2.5 rounded-full bg-[var(--success)]" />
                     </div>
                   </div>
-                  <div style={{width:"100%"}}>
-                    <h4 className="font-bold text-[var(--text-primary)] text-lg leading-none tracking-tight mb-1.5" style={{width:"100%"}}>{member.name}</h4>
+                  <div className="space-y-1">
+                    <h4 className="font-black text-[var(--text-primary)] text-xl tracking-tight leading-tight">{member.name}</h4>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="px-1.5 py-0 text-[9px] uppercase tracking-widest font-black bg-[var(--bg-subtle)]/50 border-[var(--border-strong)]">
+                      <Badge variant="outline" className="px-2 py-0.5 text-[9px] uppercase tracking-widest font-black bg-[var(--accent)]/5 border-[var(--accent)]/10 text-[var(--accent)] rounded-full">
                         {member.relationship}
                       </Badge>
+                      {member.documents && member.documents.length > 0 && (
+                        <Badge className="bg-[var(--success)]/10 text-[var(--success)] border-none h-5 px-2 text-[9px] font-black uppercase tracking-tighter rounded-full">
+                          {member.documents.length} Docs
+                        </Badge>
+                      )}
                     </div>
                   </div>
                 </div>
                 
-                
+                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-9 w-9 rounded-xl hover:bg-[var(--bg-subtle)] border border-transparent hover:border-[var(--border-strong)]" 
+                    onClick={(e) => { e.stopPropagation(); setEditMember(member); }}
+                  >
+                    <Edit3 size={15} className="text-[var(--text-secondary)]" />
+                  </Button>
+                </div>
               </div>
-<div className="flex gap-1.5 translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                  <Button variant="ghost" size="sm" className="h-9 w-9 rounded-xl hover:bg-[var(--bg-subtle)]" onClick={() => setEditMember(member)} style={{color:"black"}}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-                    </svg>
-                  </Button>
-                  <Button variant="ghost" size="sm" className="h-9 w-9 rounded-xl hover:bg-[var(--danger-muted)] text-[var(--danger)]" onClick={() => setDeleteId(member.id)} style={{color:"black"}}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{color:"black"}}>
-                      <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                    </svg>
-                  </Button>
-                </div>
-              <div className="grid gap-3" style={{marginTop:"10px"}}>
-                <div className="flex items-center justify-between text-xs py-2 border-b border-[var(--border)] border-dashed">
-                  <span className="text-[var(--text-tertiary)] font-medium">Date of Birth</span>
-                  <span className="text-[var(--text-secondary)] font-bold">{new Date(member.dob).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1 p-3 rounded-2xl bg-[var(--bg-subtle)]/30 border border-transparent group-hover:border-[var(--border-strong)] transition-all">
+                  <span className="block text-[9px] text-[var(--text-tertiary)] font-black uppercase tracking-widest">Born</span>
+                  <span className="block text-[13px] text-[var(--text-secondary)] font-bold">{formatDate(member.dob)}</span>
                 </div>
                 
-                {member.mobile && (
-                  <div className="flex items-center justify-between text-xs py-2 border-b border-[var(--border)] border-dashed">
-                    <span className="text-[var(--text-tertiary)] font-medium">Mobile</span>
-                    <span className="text-[var(--text-secondary)] font-bold">{member.mobile}</span>
+                {member.bloodGroup ? (
+                  <div className="space-y-1 p-3 rounded-2xl bg-[var(--bg-subtle)]/30 border border-transparent group-hover:border-[var(--border-strong)] transition-all">
+                    <span className="block text-[9px] text-[var(--text-tertiary)] font-black uppercase tracking-widest">Blood</span>
+                    <div className="flex items-center gap-1.5">
+                      <Droplets size={12} className="text-red-500" />
+                      <span className="text-[13px] text-[var(--text-secondary)] font-bold">{member.bloodGroup}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-1 p-3 rounded-2xl bg-[var(--bg-subtle)]/30 border border-transparent group-hover:border-[var(--border-strong)] transition-all">
+                    <span className="block text-[9px] text-[var(--text-tertiary)] font-black uppercase tracking-widest">Mobile</span>
+                    <span className="block text-[13px] text-[var(--text-secondary)] font-bold truncate">{member.mobile || "N/A"}</span>
                   </div>
                 )}
+              </div>
 
-                {member.email && (
-                  <div className="flex items-center justify-between text-xs py-2 border-b border-[var(--border)] border-dashed">
-                    <span className="text-[var(--text-tertiary)] font-medium">Email</span>
-                    <span className="text-[var(--text-secondary)] font-bold truncate max-w-[140px]">{member.email}</span>
-                  </div>
-                )}
-
-                {member.aadhaar && (
-                  <div className="flex items-center justify-between text-xs pt-1">
-                    <span className="text-[var(--text-tertiary)] font-medium">Aadhaar</span>
-                    <span className="text-[var(--text-secondary)] font-mono font-medium tracking-widest bg-[var(--bg-subtle)] px-2 py-0.5 rounded text-[10px]">
-                      •••• •••• {member.aadhaar.slice(-4)}
-                    </span>
-                  </div>
-                )}
+              <div className="mt-6 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)] pt-4 border-t border-[var(--border)] border-dashed opacity-60 group-hover:opacity-100 transition-all">
+                View Full Profile
+                <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
             
-            <div className="mt-auto h-1.5 w-full bg-[var(--bg-subtle)] relative overflow-hidden">
-              <div className="absolute inset-0 bg-[var(--accent)] translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-1000 ease-out opacity-20" />
+            <div className="h-1.5 w-full bg-[var(--bg-subtle)] relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-1000 ease-out" />
             </div>
           </div>
         </Card>

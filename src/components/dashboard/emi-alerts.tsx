@@ -5,6 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { RowSkeleton } from '@/components/ui/skeleton';
 import { CreditCard, AlertCircle, IndianRupee } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { differenceInDays, parseISO, isPast, isToday, isValid, setDate } from 'date-fns';
+import { formatDate } from '@/lib/date-utils';
 
 export default function EMIAlerts() {
   const [alerts, setAlerts] = useState<any[] | null>(null);
@@ -17,6 +20,29 @@ export default function EMIAlerts() {
       setAlerts([]);
     });
   }, []);
+
+  const getEmiStatus = (dueDateStr: string) => {
+    try {
+      if (!dueDateStr) return "future";
+      let dueDate: Date;
+      if (/^\d+$/.test(dueDateStr)) {
+        dueDate = setDate(new Date(), parseInt(dueDateStr));
+      } else {
+        dueDate = parseISO(dueDateStr);
+      }
+      if (!isValid(dueDate)) return "future";
+      
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      if (isPast(dueDate) || isToday(dueDate)) return "pending";
+      
+      const diff = differenceInDays(dueDate, today);
+      return diff <= 7 ? "pending" : "future";
+    } catch {
+      return "future";
+    }
+  };
 
   return (
     <Card className="db-card">
@@ -48,39 +74,51 @@ export default function EMIAlerts() {
           </div>
         ) : (
           <div className="db-list">
-            {alerts.slice(0, 2).map((alert, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                className="db-list__item"
-              >
-                <div className="db-emi__info">
-                  <div className="db-emi__name">
-                    {alert.emiName || alert.title || 'EMI Due'}
-                    {alert.financeProvider && (
-                      <span className="ml-2 text-[10px] font-bold text-[var(--text-tertiary)] bg-[var(--bg-elevated)] px-1.5 py-0.5 rounded border border-[var(--border)] uppercase tracking-wider">
-                        {alert.financeProvider}
-                      </span>
-                    )}
-                  </div>
-                  <div className="db-emi__due">
-                    <span className="db-emi__dot" />
-                    Next: {alert.dueDate || '-'}
-                  </div>
-                </div>
-                <div className="db-emi__amount-col">
-                  <div className="db-emi__amount">
-                    <IndianRupee size={14} />
-                    {alert.amount || '0'}
-                  </div>
-                  <Badge variant="warning" className="db-emi__badge">
-                    PENDING
-                  </Badge>
-                </div>
-              </motion.div>
-            ))}
+            {alerts
+              .filter(alert => alert.status !== "Closed")
+              .slice(0, 2)
+              .map((alert, i) => {
+                const statusType = getEmiStatus(alert.dueDate);
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.08 }}
+                    className="db-list__item"
+                  >
+                    <div className="db-emi__info">
+                      <div className="db-emi__name">
+                        {alert.emiName || alert.title || 'EMI Due'}
+                        {alert.financeProvider && (
+                          <span className="ml-2 text-[10px] font-bold text-[var(--text-tertiary)] bg-[var(--bg-elevated)] px-1.5 py-0.5 rounded border border-[var(--border)] uppercase tracking-wider">
+                            {alert.financeProvider}
+                          </span>
+                        )}
+                      </div>
+                      <div className="db-emi__due">
+                        <span className={`db-emi__dot ${statusType === 'pending' ? 'bg-orange-500' : 'bg-green-500'}`} />
+                        Next: {alert.dueDate ? formatDate(alert.dueDate) : '-'}
+                      </div>
+                    </div>
+                    <div className="db-emi__amount-col">
+                      <div className="db-emi__amount">
+                        <IndianRupee size={14} />
+                        {alert.amount || '0'}
+                      </div>
+                      <Badge 
+                        variant={statusType === "pending" ? "warning" : "success"} 
+                        className={cn(
+                          "db-emi__badge",
+                          statusType === "future" && "bg-green-500/10 text-green-600 border-green-500/20"
+                        )}
+                      >
+                        {statusType === "pending" ? "PENDING" : "SCHEDULED"}
+                      </Badge>
+                    </div>
+                  </motion.div>
+                );
+              })}
           </div>
         )}
       </CardContent>

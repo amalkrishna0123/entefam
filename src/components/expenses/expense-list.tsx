@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select } from "@/components/ui/select"
 import { formatCurrency } from "@/lib/utils"
+import { formatDate } from "@/lib/date-utils"
 
 interface Expense {
   id: string
@@ -104,9 +105,9 @@ export default function ExpenseList() {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 flex flex-col gap-2">
       {expenses.map((expense) => (
-        <Card key={expense.id} className="p-4 hover:bg-[var(--bg-elevated)] transition-all group border-none shadow-none rounded-none first:rounded-t-2xl last:rounded-b-2xl border-b last:border-b-0 border-[var(--border)]">
+        <Card key={expense.id} style={{padding:"10px"}} className="p-4 hover:bg-[var(--bg-elevated)] transition-all group border-none shadow-none rounded-none first:rounded-t-2xl last:rounded-b-2xl border-b last:border-b-0 border-[var(--border)]">
           <div className="flex items-center justify-between gap-4 py-1">
             <div className="flex items-center gap-4 min-w-0">
               <div className="w-12 h-12 rounded-2xl bg-[var(--accent-muted)] flex items-center justify-center text-[var(--accent)] shrink-0 shadow-sm">
@@ -116,13 +117,13 @@ export default function ExpenseList() {
                 </svg>
               </div>
               <div className="min-w-0">
-                <h4 className="font-bold text-[var(--text-primary)] truncate text-base md:text-lg">{expense.description}</h4>
+                <h4 className="font-bold text-[var(--text-primary)] truncate text-base md:text-lg" style={{marginBottom:"5px"}}>{expense.description}</h4>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--text-tertiary)] mt-1">
                   <span className="px-2 py-0.5 bg-[var(--bg-subtle)] rounded-full text-[var(--text-secondary)] font-semibold border border-[var(--border)]">
                     {expense.category}
                   </span>
                   <span className="hidden xs:inline opacity-30">•</span>
-                  <span className="font-medium">{new Date(expense.date).toLocaleDateString()}</span>
+                  <span className="font-medium">{formatDate(expense.date)}</span>
                 </div>
               </div>
             </div>

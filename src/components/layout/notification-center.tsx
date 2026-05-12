@@ -39,9 +39,10 @@ export default function NotificationCenter() {
         <button
           className="relative p-2 rounded-full hover:bg-[var(--bg-elevated)] transition-all duration-300 group"
           aria-label="Notifications"
+          style={{background:"#000",padding:"5px",borderRadius:"50%"}}
         >
           <Bell 
-            size={22} 
+            size={10} 
             className="transition-colors text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)]"
           />
         </button>

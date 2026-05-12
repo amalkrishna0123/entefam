@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Note, NoteFormat, NotePriority, ListType, NoteListItem, useNotesStore } from "@/store/notes-store"
 import { AlignLeft, List as ListIcon, X, ArrowRight } from "lucide-react"
@@ -31,44 +32,66 @@ export default function NoteForm({ initialData, onClose }: NoteFormProps) {
 
   const currentFormat = watch("format")
 
-  const onSubmit = (data: FormData) => {
-    let listItems = initialData?.listItems;
-    if (data.format === 'list') {
-      const lines = data.content.split('\n').filter(l => l.trim() !== '');
-      listItems = lines.map(line => {
-        // Try to parse price: "Item Name 50" or "Item Name ₹50" or "Item Name - 50"
-        const priceMatch = line.match(/(.*?)\s*[₹$]?\s*(\d+(?:\.\d+)?)\s*$/);
-        let text = line;
-        let price: number | undefined = undefined;
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-        if (priceMatch && priceMatch[1].trim()) {
-          text = priceMatch[1].trim();
-          price = parseFloat(priceMatch[2]);
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true)
+    try {
+      let listItems = initialData?.listItems;
+      if (data.format === 'list') {
+        const lines = data.content.split('\n').filter(l => l.trim() !== '');
+        listItems = lines.map(line => {
+          const priceMatch = line.match(/(.*?)\s*[₹$]?\s*(\d+(?:\.\d+)?)\s*$/);
+          let text = line;
+          let price: number | undefined = undefined;
+
+          if (priceMatch && priceMatch[1].trim()) {
+            text = priceMatch[1].trim();
+            price = parseFloat(priceMatch[2]);
+          }
+
+          const existing = initialData?.listItems?.find(item => item.text === text);
+          if (existing) return { ...existing, text, price: price ?? existing.price };
+          
+          return {
+            id: crypto.randomUUID(),
+            text,
+            isPurchased: false, 
+            price
+          } as NoteListItem;
+        });
+      } else {
+        listItems = undefined;
+        data.listType = 'none';
+      }
+
+      if (initialData) {
+        const res = await fetch(`/api/notes/${initialData.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...data, listItems })
+        });
+        if (res.ok) {
+          updateNote(initialData.id, { ...data, listItems })
+          onClose()
         }
-
-        const existing = initialData?.listItems?.find(item => item.text === text);
-        if (existing) return { ...existing, text, price: price ?? existing.price };
-        
-        return {
-          id: crypto.randomUUID(),
-          text,
-          isPurchased: price !== undefined, // If a price was found, assume it might be purchased already? 
-          // Actually, let's keep isPurchased false unless specified otherwise, 
-          // but set the price so the total calculation works.
-          price
-        } as NoteListItem;
-      });
-    } else {
-      listItems = undefined;
-      data.listType = 'none';
+      } else {
+        const res = await fetch('/api/notes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...data, listItems })
+        });
+        if (res.ok) {
+          const newNote = await res.json()
+          addNote(newNote)
+          onClose()
+        }
+      }
+    } catch (e) {
+      console.error("Failed to save note:", e)
+    } finally {
+      setIsSubmitting(false)
     }
-
-    if (initialData) {
-      updateNote(initialData.id, { ...data, listItems })
-    } else {
-      addNote({ ...data, listItems })
-    }
-    onClose()
   }
 
   return (
@@ -189,8 +212,8 @@ export default function NoteForm({ initialData, onClose }: NoteFormProps) {
           <button type="button" style={{padding:"10px"}} onClick={onClose} className="w-full sm:w-auto px-5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 text-sm font-semibold hover:bg-gray-50 transition-colors">
             Cancel
           </button>
-          <button type="submit" style={{padding:"10px"}} className="w-full sm:w-auto px-6 py-2.5 rounded-lg border-none bg-black text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-gray-800 transition-all hover:-translate-y-[1px] shadow-sm whitespace-nowrap">
-            {initialData ? 'Save Changes' : 'Create Note'} <ArrowRight size={16} />
+          <button type="submit" disabled={isSubmitting} style={{padding:"10px", opacity: isSubmitting ? 0.7 : 1}} className="w-full sm:w-auto px-6 py-2.5 rounded-lg border-none bg-black text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-gray-800 transition-all hover:-translate-y-[1px] shadow-sm whitespace-nowrap">
+            {isSubmitting ? 'Saving...' : (initialData ? 'Save Changes' : 'Create Note')} {!isSubmitting && <ArrowRight size={16} />}
           </button>
         </div>
       </form>
