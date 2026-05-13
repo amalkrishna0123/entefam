@@ -35,10 +35,10 @@ export default function NotesApp() {
   if (!isMounted) return null // Or a loading skeleton
 
   return (
-    <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '40px 24px', fontFamily: 'inherit' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
+    <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '20px 24px', fontFamily: 'inherit' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
         <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: '800', color: '#000000', letterSpacing: '-0.03em', margin: '0' }}>Notes</h1>
+          <h1 className="md:text-2xl font-bold" style={{ color: '#000000', letterSpacing: '-0.03em', margin: '0' }}>Notes</h1>
           <p className="hidden md:block" style={{ color: '#666666', marginTop: '8px', fontSize: '1.125rem' }}>Capture your thoughts, ideas, and tasks.</p>
         </div>
         

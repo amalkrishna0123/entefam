@@ -42,10 +42,10 @@ export default function HealthPage() {
       {/* Header Section */}
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }} className="flex-col lg:flex-row lg:items-end">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.75rem', borderRadius: '9999px', backgroundColor: 'var(--accent-muted)', color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', width: 'fit-content' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.75rem', borderRadius: '9999px', backgroundColor: 'transparent', border:'1px solid #27262673', color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', width: 'fit-content' }}>
             Health Management
           </div>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 500, letterSpacing: '-0.025em', color: 'var(--text-primary)', margin: 0 }} className="md:text-6xl">
+          <h1 style={{  color: 'var(--text-primary)', margin: 0 }} className="md:text-6xl hidden md:block">
             Health Tracking
           </h1>
           <p className='hidden md:block' style={{ color: 'var(--text-tertiary)', fontSize: '1.125rem', fontWeight: 500, maxWidth: '42rem', margin: 0 }}>

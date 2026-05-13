@@ -35,11 +35,11 @@ export default function NotificationCenter() {
 
   if (!isMounted) {
     return (
-      <div className="relative" ref={dropdownRef} style={{padding:"10px"}}>
+      <div className="relative" ref={dropdownRef}>
         <button
           className="relative p-2 rounded-full hover:bg-[var(--bg-elevated)] transition-all duration-300 group"
           aria-label="Notifications"
-          style={{background:"#000",padding:"5px",borderRadius:"50%"}}
+          style={{background:"#000",padding:"10px",borderRadius:"50%"}}
         >
           <Bell 
             size={10} 
@@ -57,9 +57,10 @@ export default function NotificationCenter() {
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 rounded-full hover:bg-[var(--bg-elevated)] transition-all duration-300 group"
         aria-label="Notifications"
+        style={{padding:"10px"}}
       >
         <Bell 
-          size={22} 
+          size={24} 
           className={`transition-colors ${unreadCount > 0 ? 'text-[#f6ca5f]' : 'text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)]'}`}
         />
         
@@ -68,7 +69,8 @@ export default function NotificationCenter() {
             <motion.span 
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[var(--bg-surface)]"
+              style={{color:"white",padding:"8px"}}
+              className="absolute top-1 right-1.5 w-2 h-2 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[var(--bg-surface)]"
             >
               {unreadCount > 9 ? '9+' : unreadCount}
             </motion.span>

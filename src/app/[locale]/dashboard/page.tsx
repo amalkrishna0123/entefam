@@ -30,7 +30,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="dashboard-page">
+    <div className="dashboard-page" style={{marginTop:"15px"}}>
 
       {/* ── Header ───────────────────────────────────────── */}
       <motion.div

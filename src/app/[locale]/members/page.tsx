@@ -13,7 +13,7 @@ export default function MembersPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-10 animate-fade-in py-10 px-4 md:px-8">
+    <div style={{marginTop:"15px"}} className="max-w-7xl mx-auto space-y-10 animate-fade-in py-10 px-4 md:px-8">
       {/* Page Header */}
       <div className="flex flex-col gap-2 max-w-3xl" style={{marginBottom:"15px"}}>
         <h1 className="text-[20px] md:text-6xl font-black tracking-tight text-[var(--text-primary)] leading-tight">
@@ -27,10 +27,10 @@ export default function MembersPage() {
       <div className="grid gap-10 lg:grid-cols-12 items-start">
         {/* Sidebar: Add Member */}
         <div className="lg:col-span-4 lg:sticky lg:top-24">
-          <Card className="overflow-hidden border-[var(--border-strong)] bg-[var(--bg-surface)] shadow-2xl shadow-black/5 rounded-[2.5rem]">
-            <CardHeader className="bg-[var(--bg-subtle)]/30 border-b border-[var(--border)] px-8 py-6">
-              <CardTitle className="text-xl font-black tracking-tight">Add Member</CardTitle>
-              <p className="text-[11px] text-[var(--text-tertiary)] uppercase font-bold tracking-widest mt-1">Create a new profile</p>
+          <Card className="overflow-hidden border-[var(--border-strong)] shadow-2xl shadow-black/5 rounded-[2.5rem]">
+            <CardHeader className="bg-gradient-to-br from-yellow-500 via-yellow-400 to-yellow-200 border-b border-[var(--border)] px-8 py-6">
+              <CardTitle className="text-xl text-center font-black tracking-tight">Add Member</CardTitle>
+              <p className="text-[11px] text-center text-white uppercase font-bold tracking-widest mt-1" style={{color:"white"}}>Create a new profile</p>
             </CardHeader>
             <CardContent className="p-8">
               <MemberForm onSuccess={handleSuccess} />

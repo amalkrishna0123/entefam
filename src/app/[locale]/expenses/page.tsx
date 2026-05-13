@@ -41,10 +41,10 @@ export default function ExpensesPage() {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 mb-8">
         <div className="flex flex-col gap-2">
           <h1 className="text-[20px] md:text-5xl font-bold tracking-tight text-[var(--text-primary)] flex items-center gap-3">
-            <div className="p-2 md:p-3 bg-[var(--accent-muted)] text-[var(--accent)] rounded-2xl">
+            {/* <div className="p-2 md:p-3 bg-[var(--accent-muted)] text-[var(--accent)] rounded-2xl">
               <Wallet className="w-6 h-6 md:w-8 md:h-8" />
-            </div>
-            Expenses
+            </div> */}
+            {/* Expenses */}
           </h1>
           <p className="hidden md:block text-[var(--text-secondary)] text-lg md:text-xl font-medium">
             Manage and track your family's spending.

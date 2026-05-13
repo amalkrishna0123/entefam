@@ -196,7 +196,7 @@ p, span, li {
   }
   
   .main-content {
-    padding: 32px 24px !important;
+    padding: 10px 32px 24px !important;
   }
 }
 
@@ -255,7 +255,7 @@ p, span, li {
   display: flex;
   flex-direction: column;
   gap: var(--sp-lg);
-  padding: var(--sp-lg) var(--sp);
+  /* padding: var(--sp-lg) var(--sp); */
   max-width: 1600px;
   margin-inline: auto;
   box-sizing: border-box;

@@ -89,7 +89,7 @@
 .emi-detail-view {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 10px;
   padding: 4px;
   max-height: 70vh;
   overflow-y: auto;
@@ -119,7 +119,8 @@
 .emi-detail-header {
   text-align: center;
   padding: 32px 24px;
-  background: linear-gradient(145deg, var(--bg-subtle) 0%, var(--bg-surface) 100%);
+  /* background: linear-gradient(145deg, var(--bg-subtle) 0%, var(--bg-surface) 100%); */
+  background-color: #000;
   border-radius: var(--radius-xl);
   border: 1px solid var(--border);
   display: flex;
@@ -131,7 +132,7 @@
 .emi-detail-amount {
   font-size: 2.75rem;
   font-weight: 900;
-  color: var(--text-primary);
+  color: #fff;
   letter-spacing: -0.04em;
   line-height: 1;
 }
@@ -155,12 +156,13 @@
 .emi-detail-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 10px;
 }
 
 .emi-detail-item {
   padding: 20px;
-  background: linear-gradient(145deg, var(--bg-subtle) 0%, var(--bg-surface) 100%);
+  /* background: linear-gradient(145deg, var(--bg-subtle) 0%, var(--bg-surface) 100%); */
+  background-color: #000;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   display: flex;
@@ -184,12 +186,11 @@
 .emi-detail-value {
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--text-primary);
-}
+  color: #fff;}
 
 .emi-progress-section {
   padding: 24px;
-  background: var(--bg-surface);
+  background: #000;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   display: flex;
@@ -201,12 +202,13 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  color: #fff;
 }
 
 .emi-progress-title {
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #fff;
 }
 
 .emi-progress-percentage {
@@ -260,7 +262,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 12px;
+  /* margin-top: 12px; */
 }
 
 .emi-primary-actions {
@@ -317,8 +319,8 @@
 }
 
 .emi-btn-delete {
-  background: var(--danger-muted);
-  color: var(--danger);
+  background: #ff0000;
+  color: #fff;
   border-color: var(--danger-muted);
 }
 

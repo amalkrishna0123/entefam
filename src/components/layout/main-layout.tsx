@@ -47,6 +47,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             position: "sticky",
             top: 0,
             zIndex: 40,
+            borderRadius:"18px",
+            width:"89%",
+            margin:"0 auto",
+            marginTop:"10px",
+            backdropFilter: "blur(10px)",
           }}
         >
           <button
@@ -130,7 +135,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           className="main-content"
           style={{
             flex: 1,
-            padding: "64px 80px",
+            padding: "0px 64px 80px",
             overflowY: "auto",
             minWidth: 0,
           }}

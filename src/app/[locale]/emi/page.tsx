@@ -21,10 +21,10 @@ export default function EMIPage() {
   };
 
   return (
-    <div className="space-y-12 animate-fade-in py-4">
+    <div style={{paddingTop:"15px"}} className="space-y-12 animate-fade-in py-4">
         <div className="flex items-center justify-between" style={{marginBottom:"20px"}}>
           <div className="flex flex-col gap-1">
-            <h1 className="text-2xl md:text-5xl tracking-tight text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+            <h1 className="md:text-5xl tracking-tight text-[var(--text-primary)]">
               EMI & Loans
             </h1>
             <p className="hidden md:block text-[var(--text-secondary)] text-lg font-medium">
@@ -39,7 +39,7 @@ export default function EMIPage() {
       
       <NotificationBanner onGranted={() => checkAndNotifyEmis()} />
       
-      <div className="grid gap-8 lg:grid-cols-3">
+      <div className="grid gap-3 md:gap-8 lg:grid-cols-3">
         <div className="lg:col-span-1">
           <Card className="h-full">
             <CardHeader>
@@ -51,9 +51,9 @@ export default function EMIPage() {
           </Card>
         </div>
 
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2" style={{padding:"20px",background:"white",borderRadius:"20px",border:"1px solid #00000014"}}>
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-[var(--text-primary)]" style={{marginBottom:"20px"}}>Active EMIs</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-[var(--text-primary)]" style={{marginBottom:"12px"}}>Active EMIs</h2>
             <EmiList key={refreshKey} />
           </div>
         </div>
